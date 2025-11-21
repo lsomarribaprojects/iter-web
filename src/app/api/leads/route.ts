@@ -15,9 +15,9 @@ export async function POST(req: NextRequest) {
     const lead = await req.json()
 
     // Validar datos requeridos
-    if (!lead.name || !lead.email || !lead.phone) {
+    if (!lead.name || !lead.email) {
       return NextResponse.json(
-        { error: 'Name, email, and phone are required' },
+        { error: 'Name and email are required' },
         { status: 400 }
       )
     }
