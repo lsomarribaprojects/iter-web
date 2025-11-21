@@ -24,15 +24,17 @@ export default function BlogPostPage() {
   const translations = {
     es: {
       backToBlog: 'Volver al Blog',
-      relatedTitle: '¿Te interesa este tema?',
-      relatedDescription: 'Contáctanos para más información sobre nuestros servicios',
-      contactButton: 'Contactar Ahora',
+      relatedTitle: '¿Listo para dar el siguiente paso?',
+      relatedDescription: 'Nuestro equipo de ingenieros expertos está listo para ayudarte a transformar los desafíos energéticos de tu organización en oportunidades de ahorro y crecimiento.',
+      expertText: 'Más de 10 años de experiencia en consultoría energética, auditoría solar y formación profesional en 5 países.',
+      contactButton: 'Hablar con un Experto',
     },
     en: {
       backToBlog: 'Back to Blog',
-      relatedTitle: 'Interested in this topic?',
-      relatedDescription: 'Contact us for more information about our services',
-      contactButton: 'Contact Now',
+      relatedTitle: 'Ready to take the next step?',
+      relatedDescription: 'Our team of expert engineers is ready to help you transform your organization\'s energy challenges into opportunities for savings and growth.',
+      expertText: 'More than 10 years of experience in energy consulting, solar auditing, and professional training in 5 countries.',
+      contactButton: 'Talk to an Expert',
     },
   }
 
@@ -93,17 +95,27 @@ export default function BlogPostPage() {
       </article>
 
       {/* CTA */}
-      <section className="bg-gradient-to-r from-electric-500 to-electric-600 py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="mb-4 text-2xl font-bold text-white md:text-3xl">
-            {t.relatedTitle}
-          </h2>
-          <p className="mb-8 text-lg text-white/90">
-            {t.relatedDescription}
-          </p>
-          <MagneticButton href="/contacto" variant="primary" size="lg" className="bg-white text-electric-600 hover:bg-slate-100">
-            {t.contactButton}
-          </MagneticButton>
+      <section className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-20">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-electric-500/20 mb-6">
+              <svg className="w-8 h-8 text-electric-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <h2 className="mb-4 text-3xl font-bold text-white md:text-4xl">
+              {t.relatedTitle}
+            </h2>
+            <p className="mb-6 text-lg text-slate-300 leading-relaxed">
+              {t.relatedDescription}
+            </p>
+            <p className="mb-8 text-slate-400">
+              {t.expertText}
+            </p>
+            <MagneticButton href="/contacto" variant="primary" size="lg" className="bg-electric-500 text-white hover:bg-electric-600">
+              {t.contactButton}
+            </MagneticButton>
+          </div>
         </div>
       </section>
     </>
