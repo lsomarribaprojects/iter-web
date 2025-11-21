@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { Linkedin, Mail, Phone, MapPin, Facebook, Instagram, Youtube } from 'lucide-react'
 import { SITE_CONFIG } from '@/shared/constants/site'
 import { useLanguage } from '@/shared/i18n/LanguageContext'
@@ -33,12 +34,19 @@ export function Footer() {
   ]
 
   return (
-    <footer className="bg-slate-900 text-white">
+    <footer className="bg-slate-800 text-white">
       <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Company Info */}
           <div>
-            <h3 className="text-2xl font-bold mb-4 text-electric-500">ITER</h3>
+            <div className="mb-4 bg-white rounded-lg p-3 inline-block">
+              <Image
+                src="/images/Logo-ITER-300x217.png"
+                alt="ITER Energy Solutions"
+                width={120}
+                height={87}
+              />
+            </div>
             <p className="text-white/70 mb-6">
               {t.footer.description}
             </p>

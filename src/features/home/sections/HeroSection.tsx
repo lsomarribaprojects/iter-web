@@ -16,8 +16,8 @@ export function HeroSection() {
   return (
     <section className="relative h-screen w-full overflow-hidden">
       <ParallaxImage
-        src="https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1920&h=1080&fit=crop"
-        alt="Planta solar fotovoltaica al atardecer"
+        src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1920&h=1080&fit=crop"
+        alt="Ingenieros revisando instalación solar fotovoltaica"
         className="absolute inset-0"
       />
 

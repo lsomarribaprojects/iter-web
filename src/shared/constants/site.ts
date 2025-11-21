@@ -6,7 +6,7 @@ export const SITE_CONFIG = {
   ogImage: '/og-image.jpg',
   links: {
     linkedin: 'https://linkedin.com/company/iter',
-    email: 'info@iter-energy.com',
+    email: 'info@iterge.com',
     phone: '+1 (515) 802-5762',
   },
   address: {
