@@ -15,7 +15,7 @@ export default function AboutPage() {
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[500px] w-full overflow-hidden">
         <ParallaxImage
-          src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&h=1080&fit=crop"
+          src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1920&h=1080&fit=crop"
           alt="Equipo ITER"
           className="absolute inset-0"
         />
@@ -125,7 +125,7 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
             {CERTIFICATIONS.map((cert, index) => (
               <div
                 key={index}
@@ -152,7 +152,7 @@ export default function AboutPage() {
           <p className="mb-8 text-lg text-white/90">
             {t.aboutPage.ctaDescription}
           </p>
-          <MagneticButton href="/contacto" variant="cta" size="lg">
+          <MagneticButton href="/contacto" variant="primary" size="lg" className="bg-white text-electric-600 hover:bg-slate-100">
             {t.aboutPage.ctaButton}
           </MagneticButton>
         </div>

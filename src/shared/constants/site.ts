@@ -68,8 +68,7 @@ export const STATS = [
 ]
 
 export const CERTIFICATIONS = [
-  { name: 'ISO 9001', image: '/images/logos/iso-9001.svg' },
-  { name: 'ISO 50001', image: '/images/logos/iso-50001.svg' },
-  { name: 'SEI', image: '/images/logos/sei.svg' },
-  { name: 'NABCEP', image: '/images/logos/nabcep.svg' },
+  { name: 'ISO 50001 Consulting', image: '/images/logos/iso-50001.svg' },
+  { name: 'Solar Energy International (SEI)', image: '/images/logos/sei.svg' },
+  { name: 'NABCEP Credits', image: '/images/logos/nabcep.svg' },
 ]
