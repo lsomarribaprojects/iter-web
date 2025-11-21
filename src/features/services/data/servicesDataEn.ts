@@ -17,7 +17,7 @@ export const servicesDataEn: Record<string, Service> = {
       'Component manufacturer reliability assessment',
       'Risk management and profitability maximization',
       'Experience in over 5 countries with completed projects',
-      'ISO 9001 certified processes',
+      'Proven experience in international projects',
     ],
     process: [
       {
@@ -59,7 +59,7 @@ export const servicesDataEn: Record<string, Service> = {
       {
         question: 'What certifications support your services?',
         answer:
-          'Our processes are ISO 9001 certified, supporting high-level services with international quality standards.',
+          'Our processes follow international quality standards, supporting high-level energy consulting services.',
       },
     ],
   },

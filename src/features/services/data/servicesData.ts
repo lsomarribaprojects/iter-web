@@ -16,8 +16,8 @@ export const servicesData: Record<string, Service> = {
       'Revisión técnica integral de plantas solares y proveedores principales',
       'Evaluación de confiabilidad de fabricantes de componentes',
       'Gestión del riesgo y maximización de rentabilidad',
-      'Experiencia en más de 65 países con proyectos completados',
-      'Procesos certificados bajo ISO 9001',
+      'Experiencia en más de 5 países con proyectos completados',
+      'Experiencia comprobada en proyectos internacionales',
     ],
     process: [
       {
@@ -54,12 +54,12 @@ export const servicesData: Record<string, Service> = {
       {
         question: '¿En qué países tienen experiencia?',
         answer:
-          'Hemos trabajado en proyectos fotovoltaicos en más de 65 países, combinando experiencia global con conocimiento técnico especializado en tecnología fotovoltaica.',
+          'Hemos trabajado en proyectos fotovoltaicos en más de 5 países, combinando experiencia global con conocimiento técnico especializado en tecnología fotovoltaica.',
       },
       {
         question: '¿Qué certificaciones respaldan sus servicios?',
         answer:
-          'Nuestros procesos están certificados bajo ISO 9001, respaldando servicios de alto nivel con estándares internacionales de calidad.',
+          'Nuestros procesos siguen estándares internacionales de calidad, respaldando servicios de alto nivel en consultoría energética.',
       },
     ],
   },

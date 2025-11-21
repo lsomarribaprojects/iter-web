@@ -11,8 +11,8 @@ export const KNOWLEDGE_BASE = {
     description: 'Empresa líder en consultoría solar, gestión energética y formación profesional',
     experience: 'Más de 10 años de experiencia',
     countries: '5 países de operación (Ecuador, Costa Rica, Nicaragua, Honduras, EE.UU.)',
-    projects: 'Más de 200 proyectos completados en 65 países',
-    certifications: ['ISO 9001', 'ISO 50001', 'SEI', 'NABCEP'],
+    projects: 'Más de 50 proyectos completados en 5 países',
+    certifications: ['ISO 50001 Consulting', 'SEI', 'NABCEP'],
     clients: ['Pronaca', 'Ferrero Ecuador', 'EEQ'],
   },
 
