@@ -15,8 +15,8 @@ export function ChatWidget() {
   const { language, t } = useLanguage()
 
   const greetingMessage: Record<'es' | 'en', string> = {
-    es: '¡Hola! Soy Marcus Blake, Consultor Senior en Gestión Energética de ITER. Con más de 10 años de experiencia, ayudo a empresas a reducir costos energéticos hasta un 20% mediante ISO 50001 y sistemas fotovoltaicos. ¿En qué puedo ayudarte hoy?',
-    en: 'Hello! I\'m Marcus Blake, Senior Energy Management Consultant at ITER. With over 10 years of experience, I help companies reduce energy costs by up to 20% through ISO 50001 and photovoltaic systems. How can I help you today?',
+    es: '¡Hola! Soy Marcus de ITER. ¿Buscas reducir costos energéticos o necesitas asesoría en proyectos solares? Cuéntame cómo puedo ayudarte.',
+    en: 'Hi! I\'m Marcus from ITER. Looking to reduce energy costs or need advice on solar projects? Tell me how I can help you.',
   }
 
   // Agregar mensaje de bienvenida cuando se abre el chat
@@ -186,9 +186,9 @@ export function ChatWidget() {
                   <Zap className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="font-semibold">Marcus Blake</h3>
+                  <h3 className="font-semibold">Marcus</h3>
                   <p className="text-xs text-white/90">
-                    {language === 'es' ? 'Consultor Senior • En línea' : 'Senior Consultant • Online'}
+                    {language === 'es' ? 'Asesor ITER • En línea' : 'ITER Advisor • Online'}
                   </p>
                 </div>
               </div>

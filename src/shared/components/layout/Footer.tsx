@@ -39,12 +39,13 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Company Info */}
           <div>
-            <div className="mb-4 bg-white rounded-lg p-3 inline-block">
+            <div className="mb-4 inline-block drop-shadow-[0_0_20px_rgba(59,130,246,0.6)]">
               <Image
                 src="/images/Logo-ITER-300x217.png"
                 alt="ITER Energy Solutions"
-                width={120}
-                height={87}
+                width={140}
+                height={101}
+                className="brightness-0 invert"
               />
             </div>
             <p className="text-white/70 mb-6">

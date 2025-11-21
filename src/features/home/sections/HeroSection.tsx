@@ -1,7 +1,6 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ParallaxImage } from '@/shared/components/animations/ParallaxImage'
 import { MagneticButton } from '@/shared/components/ui/MagneticButton'
 import { ScrollIndicator } from '@/shared/components/ui/ScrollIndicator'
 import { EnergyAnimation } from './EnergyAnimation'
@@ -10,16 +9,28 @@ import { Zap } from 'lucide-react'
 
 export function HeroSection() {
   const { t, language } = useLanguage()
-  console.log('HeroSection renderizando con idioma:', language)
-  console.log('Título:', t.hero.title)
 
   return (
     <section className="relative h-screen w-full overflow-hidden">
-      <ParallaxImage
-        src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1920&h=1080&fit=crop"
-        alt="Ingenieros revisando instalación solar fotovoltaica"
-        className="absolute inset-0"
-      />
+      {/* Video Background */}
+      <div className="absolute inset-0 z-0">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="h-full w-full object-cover"
+          poster="https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1920&h=1080&fit=crop"
+        >
+          <source
+            src="https://videos.pexels.com/video-files/3201597/3201597-uhd_2560_1440_25fps.mp4"
+            type="video/mp4"
+          />
+        </video>
+        {/* Overlay gradient */}
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-slate-900/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-slate-900/30" />
+      </div>
 
       <EnergyAnimation />
 
