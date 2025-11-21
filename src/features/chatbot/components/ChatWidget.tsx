@@ -15,8 +15,8 @@ export function ChatWidget() {
   const { language, t } = useLanguage()
 
   const greetingMessage: Record<'es' | 'en', string> = {
-    es: '¡Hola! Soy Diego Solaris, Consultor Senior en Gestión Energética de ITER. Con más de 10 años de experiencia, ayudo a empresas a reducir costos energéticos hasta un 20% mediante ISO 50001 y sistemas fotovoltaicos. ¿En qué puedo ayudarte hoy?',
-    en: 'Hello! I\'m Diego Solaris, Senior Energy Management Consultant at ITER. With over 10 years of experience, I help companies reduce energy costs by up to 20% through ISO 50001 and photovoltaic systems. How can I help you today?',
+    es: '¡Hola! Soy Marcus Blake, Consultor Senior en Gestión Energética de ITER. Con más de 10 años de experiencia, ayudo a empresas a reducir costos energéticos hasta un 20% mediante ISO 50001 y sistemas fotovoltaicos. ¿En qué puedo ayudarte hoy?',
+    en: 'Hello! I\'m Marcus Blake, Senior Energy Management Consultant at ITER. With over 10 years of experience, I help companies reduce energy costs by up to 20% through ISO 50001 and photovoltaic systems. How can I help you today?',
   }
 
   // Agregar mensaje de bienvenida cuando se abre el chat
@@ -80,14 +80,51 @@ export function ChatWidget() {
         throw new Error(data.error || 'Error en la respuesta')
       }
 
+      // Simular escritura realista palabra por palabra
+      const fullMessage = data.message
+      const words = fullMessage.split(' ')
+      let currentText = ''
+
+      // Crear mensaje vacío inicial
+      const assistantMessageId = (Date.now() + 1).toString()
       const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
+        id: assistantMessageId,
         role: 'assistant',
-        content: data.message,
+        content: '',
         timestamp: new Date(),
       }
 
       setMessages((prev) => [...prev, assistantMessage])
+      setIsTyping(false)
+
+      // Escribir palabra por palabra
+      for (let i = 0; i < words.length; i++) {
+        currentText += (i > 0 ? ' ' : '') + words[i]
+
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.id === assistantMessageId
+              ? { ...msg, content: currentText }
+              : msg
+          )
+        )
+
+        // Delay variable: más largo en puntos finales de párrafo
+        const word = words[i]
+        let delay = 40 + Math.random() * 30 // 40-70ms por palabra
+
+        if (word.includes('.') || word.includes('?') || word.includes('!')) {
+          delay += 400 + Math.random() * 300 // 400-700ms extra para pausas naturales
+        } else if (word.includes(',') || word.includes(':')) {
+          delay += 150 + Math.random() * 100 // 150-250ms para comas
+        }
+
+        if (word.includes('\n')) {
+          delay += 600 + Math.random() * 400 // 600-1000ms para saltos de línea
+        }
+
+        await new Promise(resolve => setTimeout(resolve, delay))
+      }
     } catch (error) {
       console.error('Error sending message:', error)
 
@@ -100,7 +137,6 @@ export function ChatWidget() {
         timestamp: new Date(),
       }
       setMessages((prev) => [...prev, errorMessage])
-    } finally {
       setIsTyping(false)
     }
   }
@@ -141,7 +177,7 @@ export function ChatWidget() {
             initial={{ opacity: 0, y: 100, scale: 0.8 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 100, scale: 0.8 }}
-            className="fixed bottom-6 right-6 z-50 flex h-[600px] w-[400px] flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
+            className="fixed bottom-6 right-6 z-50 flex h-[600px] w-[400px] max-w-[90vw] max-h-[80vh] flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
           >
             {/* Header */}
             <div className="flex items-center justify-between bg-gradient-to-r from-blue-600 to-cyan-500 p-4 text-white shadow-lg">
@@ -150,7 +186,7 @@ export function ChatWidget() {
                   <Zap className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="font-semibold">Diego Solaris</h3>
+                  <h3 className="font-semibold">Marcus Blake</h3>
                   <p className="text-xs text-white/90">
                     {language === 'es' ? 'Consultor Senior • En línea' : 'Senior Consultant • Online'}
                   </p>
