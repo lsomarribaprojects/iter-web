@@ -1,7 +1,7 @@
 export const SITE_CONFIG = {
   name: 'ITER',
-  title: 'ITER - Consultoría en Gestión Energética y Sostenibilidad',
-  description: 'Especialistas en gestión energética ISO 50001, eficiencia energética, economía circular y transformación sostenible. Servicios de consultoría energética con presencia en Ecuador, Costa Rica, Nicaragua, Honduras y Estados Unidos.',
+  title: 'ITER - Consultoría Solar, Auditoría Fotovoltaica y Gestión Energética ISO 50001',
+  description: 'Auditoría técnica de proyectos solares, due diligence fotovoltaico, implementación ISO 50001 y capacitación SEI-NABCEP. Reducción de costos energéticos hasta 20% con consultoría especializada en 5 países.',
   url: 'https://iter-energy.com',
   ogImage: '/og-image.jpg',
   links: {
