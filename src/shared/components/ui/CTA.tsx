@@ -81,7 +81,7 @@ export function CTA({
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
               <MagneticButton
                 href={primaryButtonHref}
-                variant={variant === 'light' ? 'primary' : 'outline'}
+                variant={variant === 'light' ? 'primary' : 'cta'}
                 size="lg"
                 className="group"
               >

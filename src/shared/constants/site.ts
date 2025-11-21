@@ -7,12 +7,12 @@ export const SITE_CONFIG = {
   links: {
     linkedin: 'https://linkedin.com/company/iter',
     email: 'info@iter-energy.com',
-    phone: '+593 99 565 4840',
+    phone: '+1 (515) 678-1423',
   },
   address: {
-    street: 'Quito',
-    city: 'Ecuador',
-    country: 'Ecuador',
+    street: '',
+    city: 'Iowa',
+    country: 'USA',
     postalCode: '',
   },
 }

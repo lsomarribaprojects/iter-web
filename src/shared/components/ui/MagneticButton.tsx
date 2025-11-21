@@ -9,7 +9,7 @@ interface MagneticButtonProps {
   className?: string
   onClick?: () => void
   href?: string
-  variant?: 'primary' | 'secondary' | 'outline'
+  variant?: 'primary' | 'secondary' | 'outline' | 'cta'
   size?: 'sm' | 'md' | 'lg'
 }
 
@@ -45,6 +45,8 @@ export function MagneticButton({
       'bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800',
     outline:
       'border-2 border-electric-500 text-electric-500 hover:bg-electric-500 hover:text-white',
+    cta:
+      'bg-blue-600 text-white border-2 border-white hover:bg-blue-700 shadow-xl hover:shadow-2xl',
   }
 
   const sizeClasses = {
