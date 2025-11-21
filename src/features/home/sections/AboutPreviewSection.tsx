@@ -23,8 +23,8 @@ export function AboutPreviewSection() {
           >
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
               <Image
-                src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop"
-                alt="Equipo de ingenieros de ITER"
+                src="https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&h=600&fit=crop"
+                alt="Auditoría técnica de planta solar fotovoltaica"
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
