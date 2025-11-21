@@ -144,9 +144,9 @@ export const es = {
       { title: 'Sostenibilidad', description: 'Compromiso con objetivos de desarrollo sostenible y descarbonización global.' },
     ],
     timeline: [
-      { year: '2015', title: 'Inicios en Consultoría Energética', description: 'El equipo de ITER comenzó colaborando con consultoras especializadas para implementar y certificar sistemas de gestión energética ISO 50001 en empresas de la región.' },
-      { year: '2020', title: 'Formación Profesional SEI', description: 'Capacitación de profesionales en sistemas fotovoltaicos con certificación Solar Energy International y graduados en el posgrado de Gestión del Desempeño Energético ISO 50001.' },
-      { year: '2024', title: 'Expansión a Estados Unidos', description: 'Establecimiento de operaciones en Iowa, USA, ampliando servicios de consultoría energética y formación profesional al mercado norteamericano.' },
+      { year: '2015', title: 'Consultoría Solar y Gestión Energética', description: 'Inicio de servicios de diseño, supervisión e inspección QA/QC en proyectos fotovoltaicos. Colaboración con consultoras para implementar y certificar sistemas de gestión energética ISO 50001 en empresas industriales de la región.' },
+      { year: '2020', title: 'Formación Profesional Acreditada', description: 'Lanzamiento de programas de capacitación en sistemas fotovoltaicos con licencia de Solar Energy International (SEI) y créditos NABCEP. Graduados del posgrado en Gestión del Desempeño Energético basado en ISO 50001.' },
+      { year: '2024', title: 'Expansión Internacional', description: 'Establecimiento de operaciones en Iowa, USA, ampliando servicios de consultoría energética, auditoría solar y formación profesional al mercado norteamericano.' },
     ],
   },
 }

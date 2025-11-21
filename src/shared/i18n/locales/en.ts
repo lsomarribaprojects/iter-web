@@ -146,9 +146,9 @@ export const en: Translations = {
       { title: 'Sustainability', description: 'Commitment to sustainable development goals and global decarbonization.' },
     ],
     timeline: [
-      { year: '2015', title: 'Energy Consulting Beginnings', description: 'The ITER team began collaborating with specialized consultancies to implement and certify ISO 50001 energy management systems in regional companies.' },
-      { year: '2020', title: 'SEI Professional Training', description: 'Training professionals in photovoltaic systems with Solar Energy International certification and graduates in the Energy Performance Management ISO 50001 postgraduate program.' },
-      { year: '2024', title: 'US Expansion', description: 'Establishment of operations in Iowa, USA, expanding energy consulting and professional training services to the North American market.' },
+      { year: '2015', title: 'Solar Consulting & Energy Management', description: 'Start of design, supervision, and QA/QC inspection services for photovoltaic projects. Collaboration with consultancies to implement and certify ISO 50001 energy management systems in regional industrial companies.' },
+      { year: '2020', title: 'Accredited Professional Training', description: 'Launch of photovoltaic systems training programs with Solar Energy International (SEI) license and NABCEP credits. Graduates from the Energy Performance Management postgraduate program based on ISO 50001.' },
+      { year: '2024', title: 'International Expansion', description: 'Establishment of operations in Iowa, USA, expanding energy consulting, solar auditing, and professional training services to the North American market.' },
     ],
   },
 }
