@@ -92,22 +92,29 @@ export function ContactForm() {
       })
 
       if (!leadResponse.ok) {
-        throw new Error('Error al enviar el mensaje')
+        const errorData = await leadResponse.json()
+        console.error('Lead save error:', errorData)
+        throw new Error(errorData.error || 'Error al enviar el mensaje')
       }
 
-      // Enviar notificación al equipo
-      await fetch('/api/notifications/lead', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          company: formData.company,
-          service: formData.service,
-          motivation: formData.message,
-        }),
-      })
+      // Enviar notificación al equipo (no falla si esto falla)
+      try {
+        await fetch('/api/notifications/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            company: formData.company,
+            service: formData.service,
+            motivation: formData.message,
+          }),
+        })
+      } catch (notificationError) {
+        console.error('Notification error (non-blocking):', notificationError)
+        // No bloqueamos el flujo si falla la notificación
+      }
 
       setSubmitted(true)
       setTimeout(() => {

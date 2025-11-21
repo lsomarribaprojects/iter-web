@@ -88,14 +88,20 @@ export async function POST(req: NextRequest) {
       })
     }
 
-    // Sin Supabase ni desarrollo, devolver error
-    return NextResponse.json(
-      {
-        error: 'No database configured',
-        message: 'Please configure Supabase or use development mode'
-      },
-      { status: 503 }
-    )
+    // Sin Supabase en producción: aceptar el lead de todas formas
+    // El email notification contendrá la información
+    console.log('Lead received (no database):', lead)
+
+    return NextResponse.json({
+      success: true,
+      message: 'Lead received successfully',
+      note: 'Configure Supabase to store leads in database',
+      lead: {
+        id: Date.now().toString(),
+        ...lead,
+        createdAt: new Date().toISOString(),
+      }
+    })
 
   } catch (error: any) {
     console.error('Error in leads API:', error)
