@@ -3,6 +3,7 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { CheckCircle } from 'lucide-react'
+import { useLanguage } from '@/shared/i18n/LanguageContext'
 
 interface ServiceBenefitsProps {
   benefits: string[]
@@ -11,6 +12,9 @@ interface ServiceBenefitsProps {
 export function ServiceBenefits({ benefits }: ServiceBenefitsProps) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const { language } = useLanguage()
+
+  const title = language === 'en' ? { main: 'Key', highlight: 'Benefits' } : { main: 'Beneficios', highlight: 'Clave' }
 
   return (
     <section ref={ref} className="bg-slate-50 py-20">
@@ -22,7 +26,7 @@ export function ServiceBenefits({ benefits }: ServiceBenefitsProps) {
           transition={{ duration: 0.6 }}
         >
           <h2 className="mb-4 text-3xl font-bold text-slate-900 md:text-4xl">
-            Beneficios <span className="text-electric-500">Clave</span>
+            {title.main} <span className="text-electric-500">{title.highlight}</span>
           </h2>
         </motion.div>
 

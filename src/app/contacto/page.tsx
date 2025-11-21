@@ -1,49 +1,75 @@
-import { Metadata } from 'next'
+'use client'
+
 import { ParallaxImage } from '@/shared/components/animations/ParallaxImage'
-import { generateMetadata as genMeta } from '@/shared/lib/metadata'
 import { ContactForm } from '@/features/contact/components/ContactForm'
 import { SITE_CONFIG } from '@/shared/constants/site'
 import { Mail, Phone, MapPin, Clock } from 'lucide-react'
+import { useLanguage } from '@/shared/i18n/LanguageContext'
 
-export const metadata: Metadata = genMeta({
-  title: 'Contacto',
-  description:
-    'Contacta con ITER para consultas sobre servicios de consultoría solar, gestión energética ISO 50001 y formación profesional. Estamos aquí para ayudarte.',
-  keywords: [
-    'contacto ITER',
-    'consulta servicios solares',
-    'presupuesto energía renovable',
-  ],
-})
-
-const contactInfo = [
-  {
-    icon: Mail,
-    title: 'Email',
-    value: SITE_CONFIG.links.email,
-    href: `mailto:${SITE_CONFIG.links.email}`,
+const translations = {
+  es: {
+    heroTitle: 'Contáctanos',
+    heroSubtitle: 'Estamos aquí para ayudarte con tu proyecto energético',
+    infoTitle: 'Información de',
+    infoHighlight: 'Contacto',
+    phone: 'Teléfono',
+    address: 'Dirección',
+    schedule: 'Horario',
+    scheduleValue: 'Lun - Vie: 9:00 - 18:00',
+    helpTitle: '¿Necesitas ayuda inmediata?',
+    helpDescription: 'Nuestro equipo de expertos está disponible para responder tus consultas sobre proyectos solares y gestión energética.',
+    callNow: 'Llamar Ahora',
+    formTitle: 'Envíanos un Mensaje',
+    mapLabel: 'Mapa interactivo',
   },
-  {
-    icon: Phone,
-    title: 'Teléfono',
-    value: SITE_CONFIG.links.phone,
-    href: `tel:${SITE_CONFIG.links.phone}`,
+  en: {
+    heroTitle: 'Contact Us',
+    heroSubtitle: 'We are here to help with your energy project',
+    infoTitle: 'Contact',
+    infoHighlight: 'Information',
+    phone: 'Phone',
+    address: 'Address',
+    schedule: 'Hours',
+    scheduleValue: 'Mon - Fri: 9:00 AM - 6:00 PM',
+    helpTitle: 'Need immediate help?',
+    helpDescription: 'Our team of experts is available to answer your questions about solar projects and energy management.',
+    callNow: 'Call Now',
+    formTitle: 'Send Us a Message',
+    mapLabel: 'Interactive map',
   },
-  {
-    icon: MapPin,
-    title: 'Dirección',
-    value: `${SITE_CONFIG.address.street}, ${SITE_CONFIG.address.city}`,
-    href: null,
-  },
-  {
-    icon: Clock,
-    title: 'Horario',
-    value: 'Lun - Vie: 9:00 - 18:00',
-    href: null,
-  },
-]
+}
 
 export default function ContactPage() {
+  const { language } = useLanguage()
+  const t = translations[language as 'es' | 'en']
+
+  const contactInfo = [
+    {
+      icon: Mail,
+      title: 'Email',
+      value: SITE_CONFIG.links.email,
+      href: `mailto:${SITE_CONFIG.links.email}`,
+    },
+    {
+      icon: Phone,
+      title: t.phone,
+      value: SITE_CONFIG.links.phone,
+      href: `tel:${SITE_CONFIG.links.phone}`,
+    },
+    {
+      icon: MapPin,
+      title: t.address,
+      value: `${SITE_CONFIG.address.street}, ${SITE_CONFIG.address.city}`,
+      href: null,
+    },
+    {
+      icon: Clock,
+      title: t.schedule,
+      value: t.scheduleValue,
+      href: null,
+    },
+  ]
+
   return (
     <>
       {/* Hero Section */}
@@ -58,10 +84,10 @@ export default function ContactPage() {
           <div className="container mx-auto px-4">
             <div className="max-w-3xl">
               <h1 className="mb-4 text-5xl font-bold text-white md:text-6xl lg:text-7xl">
-                <span className="text-electric-500">Contáctanos</span>
+                <span className="text-electric-500">{t.heroTitle}</span>
               </h1>
               <p className="text-xl text-white/90 md:text-2xl">
-                Estamos aquí para ayudarte con tu proyecto energético
+                {t.heroSubtitle}
               </p>
             </div>
           </div>
@@ -75,8 +101,8 @@ export default function ContactPage() {
             {/* Contact Info */}
             <div>
               <h2 className="mb-8 text-3xl font-bold text-slate-900 md:text-4xl">
-                Información de{' '}
-                <span className="text-electric-500">Contacto</span>
+                {t.infoTitle}{' '}
+                <span className="text-electric-500">{t.infoHighlight}</span>
               </h2>
 
               <div className="space-y-6">
@@ -106,18 +132,17 @@ export default function ContactPage() {
 
               <div className="mt-12 rounded-2xl bg-gradient-to-br from-orange-50 to-orange-100 p-8">
                 <h3 className="mb-4 text-xl font-bold text-slate-900">
-                  ¿Necesitas ayuda inmediata?
+                  {t.helpTitle}
                 </h3>
                 <p className="mb-4 text-slate-700">
-                  Nuestro equipo de expertos está disponible para responder tus
-                  consultas sobre proyectos solares y gestión energética.
+                  {t.helpDescription}
                 </p>
                 <a
                   href={`tel:${SITE_CONFIG.links.phone}`}
                   className="inline-flex items-center font-semibold text-electric-600 hover:text-electric-700"
                 >
                   <Phone className="mr-2 h-5 w-5" />
-                  Llamar Ahora
+                  {t.callNow}
                 </a>
               </div>
             </div>
@@ -125,7 +150,7 @@ export default function ContactPage() {
             {/* Contact Form */}
             <div className="rounded-2xl bg-slate-50 p-8 lg:p-10">
               <h2 className="mb-6 text-2xl font-bold text-slate-900">
-                Envíanos un Mensaje
+                {t.formTitle}
               </h2>
               <ContactForm />
             </div>
@@ -141,7 +166,7 @@ export default function ContactPage() {
               <div className="text-center">
                 <MapPin className="mx-auto mb-4 h-12 w-12 text-slate-500" />
                 <p className="text-slate-600">
-                  Mapa interactivo - {SITE_CONFIG.address.city}
+                  {t.mapLabel} - {SITE_CONFIG.address.city}
                 </p>
               </div>
             </div>

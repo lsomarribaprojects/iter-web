@@ -15,6 +15,7 @@ import {
   Wrench,
 } from 'lucide-react'
 import { ProcessStep } from '@/shared/types'
+import { useLanguage } from '@/shared/i18n/LanguageContext'
 
 const icons = {
   FileText,
@@ -36,6 +37,9 @@ interface ServiceProcessProps {
 export function ServiceProcess({ steps }: ServiceProcessProps) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const { language } = useLanguage()
+
+  const title = language === 'en' ? { main: 'Our', highlight: 'Process' } : { main: 'Nuestro', highlight: 'Proceso' }
 
   return (
     <section ref={ref} className="bg-white py-20">
@@ -47,7 +51,7 @@ export function ServiceProcess({ steps }: ServiceProcessProps) {
           transition={{ duration: 0.6 }}
         >
           <h2 className="mb-4 text-3xl font-bold text-slate-900 md:text-4xl">
-            Nuestro <span className="text-electric-500">Proceso</span>
+            {title.main} <span className="text-electric-500">{title.highlight}</span>
           </h2>
         </motion.div>
 

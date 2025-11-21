@@ -2,10 +2,60 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { MagneticButton } from '@/shared/components/ui/MagneticButton'
 import { Send } from 'lucide-react'
+import { useLanguage } from '@/shared/i18n/LanguageContext'
+
+const translations = {
+  es: {
+    fullName: 'Nombre Completo *',
+    namePlaceholder: 'Tu nombre',
+    email: 'Email *',
+    emailPlaceholder: 'tu@email.com',
+    phone: 'Teléfono',
+    phonePlaceholder: '+1 515 000 0000',
+    company: 'Empresa',
+    companyPlaceholder: 'Tu empresa',
+    serviceInterest: 'Servicio de Interés',
+    selectService: 'Selecciona un servicio',
+    solarConsulting: 'Consultoría Solar',
+    energyManagement: 'Gestión Energética ISO 50001',
+    training: 'Formación Profesional',
+    other: 'Otro',
+    message: 'Mensaje *',
+    messagePlaceholder: 'Cuéntanos sobre tu proyecto...',
+    sending: 'Enviando...',
+    sendMessage: 'Enviar Mensaje',
+    successTitle: '¡Mensaje Enviado!',
+    successMessage: 'Nos pondremos en contacto contigo pronto.',
+  },
+  en: {
+    fullName: 'Full Name *',
+    namePlaceholder: 'Your name',
+    email: 'Email *',
+    emailPlaceholder: 'you@email.com',
+    phone: 'Phone',
+    phonePlaceholder: '+1 515 000 0000',
+    company: 'Company',
+    companyPlaceholder: 'Your company',
+    serviceInterest: 'Service of Interest',
+    selectService: 'Select a service',
+    solarConsulting: 'Solar Consulting',
+    energyManagement: 'ISO 50001 Energy Management',
+    training: 'Professional Training',
+    other: 'Other',
+    message: 'Message *',
+    messagePlaceholder: 'Tell us about your project...',
+    sending: 'Sending...',
+    sendMessage: 'Send Message',
+    successTitle: 'Message Sent!',
+    successMessage: 'We will contact you soon.',
+  },
+}
 
 export function ContactForm() {
+  const { language } = useLanguage()
+  const t = translations[language as 'es' | 'en']
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -21,13 +71,11 @@ export function ContactForm() {
     e.preventDefault()
     setIsSubmitting(true)
 
-    // Simulate form submission
     await new Promise((resolve) => setTimeout(resolve, 1500))
 
     setIsSubmitting(false)
     setSubmitted(true)
 
-    // Reset form after 3 seconds
     setTimeout(() => {
       setSubmitted(false)
       setFormData({
@@ -61,10 +109,10 @@ export function ContactForm() {
       >
         <div className="mb-4 text-6xl">✓</div>
         <h3 className="mb-2 text-2xl font-bold text-green-900">
-          ¡Mensaje Enviado!
+          {t.successTitle}
         </h3>
         <p className="text-green-700">
-          Nos pondremos en contacto contigo pronto.
+          {t.successMessage}
         </p>
       </motion.div>
     )
@@ -78,7 +126,7 @@ export function ContactForm() {
             htmlFor="name"
             className="mb-2 block text-sm font-semibold text-slate-700"
           >
-            Nombre Completo *
+            {t.fullName}
           </label>
           <input
             type="text"
@@ -88,7 +136,7 @@ export function ContactForm() {
             value={formData.name}
             onChange={handleChange}
             className="w-full rounded-lg border border-slate-300 px-4 py-3 transition-colors focus:border-electric-500 focus:outline-none focus:ring-2 focus:ring-electric-500/20"
-            placeholder="Tu nombre"
+            placeholder={t.namePlaceholder}
           />
         </div>
 
@@ -97,7 +145,7 @@ export function ContactForm() {
             htmlFor="email"
             className="mb-2 block text-sm font-semibold text-slate-700"
           >
-            Email *
+            {t.email}
           </label>
           <input
             type="email"
@@ -107,7 +155,7 @@ export function ContactForm() {
             value={formData.email}
             onChange={handleChange}
             className="w-full rounded-lg border border-slate-300 px-4 py-3 transition-colors focus:border-electric-500 focus:outline-none focus:ring-2 focus:ring-electric-500/20"
-            placeholder="tu@email.com"
+            placeholder={t.emailPlaceholder}
           />
         </div>
 
@@ -116,7 +164,7 @@ export function ContactForm() {
             htmlFor="phone"
             className="mb-2 block text-sm font-semibold text-slate-700"
           >
-            Teléfono
+            {t.phone}
           </label>
           <input
             type="tel"
@@ -125,7 +173,7 @@ export function ContactForm() {
             value={formData.phone}
             onChange={handleChange}
             className="w-full rounded-lg border border-slate-300 px-4 py-3 transition-colors focus:border-electric-500 focus:outline-none focus:ring-2 focus:ring-electric-500/20"
-            placeholder="+34 600 000 000"
+            placeholder={t.phonePlaceholder}
           />
         </div>
 
@@ -134,7 +182,7 @@ export function ContactForm() {
             htmlFor="company"
             className="mb-2 block text-sm font-semibold text-slate-700"
           >
-            Empresa
+            {t.company}
           </label>
           <input
             type="text"
@@ -143,7 +191,7 @@ export function ContactForm() {
             value={formData.company}
             onChange={handleChange}
             className="w-full rounded-lg border border-slate-300 px-4 py-3 transition-colors focus:border-electric-500 focus:outline-none focus:ring-2 focus:ring-electric-500/20"
-            placeholder="Tu empresa"
+            placeholder={t.companyPlaceholder}
           />
         </div>
       </div>
@@ -153,7 +201,7 @@ export function ContactForm() {
           htmlFor="service"
           className="mb-2 block text-sm font-semibold text-slate-700"
         >
-          Servicio de Interés
+          {t.serviceInterest}
         </label>
         <select
           id="service"
@@ -162,11 +210,11 @@ export function ContactForm() {
           onChange={handleChange}
           className="w-full rounded-lg border border-slate-300 px-4 py-3 transition-colors focus:border-electric-500 focus:outline-none focus:ring-2 focus:ring-electric-500/20"
         >
-          <option value="">Selecciona un servicio</option>
-          <option value="consultoria-solar">Consultoría Solar</option>
-          <option value="gestion-energetica">Gestión Energética ISO 50001</option>
-          <option value="formacion">Formación Profesional</option>
-          <option value="otro">Otro</option>
+          <option value="">{t.selectService}</option>
+          <option value="consultoria-solar">{t.solarConsulting}</option>
+          <option value="gestion-energetica">{t.energyManagement}</option>
+          <option value="formacion">{t.training}</option>
+          <option value="otro">{t.other}</option>
         </select>
       </div>
 
@@ -175,7 +223,7 @@ export function ContactForm() {
           htmlFor="message"
           className="mb-2 block text-sm font-semibold text-slate-700"
         >
-          Mensaje *
+          {t.message}
         </label>
         <textarea
           id="message"
@@ -185,7 +233,7 @@ export function ContactForm() {
           value={formData.message}
           onChange={handleChange}
           className="w-full rounded-lg border border-slate-300 px-4 py-3 transition-colors focus:border-electric-500 focus:outline-none focus:ring-2 focus:ring-electric-500/20"
-          placeholder="Cuéntanos sobre tu proyecto..."
+          placeholder={t.messagePlaceholder}
         />
       </div>
 
@@ -195,11 +243,11 @@ export function ContactForm() {
         className="inline-flex w-full items-center justify-center rounded-lg bg-gradient-to-r from-electric-500 to-electric-600 px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:from-electric-600 hover:to-electric-700 hover:shadow-xl disabled:opacity-50 sm:w-auto"
       >
         {isSubmitting ? (
-          'Enviando...'
+          t.sending
         ) : (
           <>
             <Send className="mr-2 h-5 w-5" />
-            Enviar Mensaje
+            {t.sendMessage}
           </>
         )}
       </button>

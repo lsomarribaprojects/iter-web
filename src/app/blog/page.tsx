@@ -1,64 +1,103 @@
-import { Metadata } from 'next'
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
 import { ParallaxImage } from '@/shared/components/animations/ParallaxImage'
-import { generateMetadata as genMeta } from '@/shared/lib/metadata'
 import { CTA } from '@/shared/components/ui/CTA'
 import { Calendar, Clock, User } from 'lucide-react'
+import { useLanguage } from '@/shared/i18n/LanguageContext'
 
-export const metadata: Metadata = genMeta({
-  title: 'Blog',
-  description:
-    'Artículos sobre energía solar, gestión energética, eficiencia y sostenibilidad. Guías, casos de estudio y últimas tendencias en energías renovables.',
-  keywords: [
-    'blog energía solar',
-    'artículos renovables',
-    'guías fotovoltaicas',
-    'tendencias energéticas',
+const blogPosts = {
+  es: [
+    {
+      id: 1,
+      title: 'Guía Completa para Auditorías QA/QC en Proyectos Solares Fotovoltaicos',
+      excerpt: 'Descubre los aspectos críticos de las auditorías de calidad en plantas solares y cómo asegurar el máximo rendimiento de tu inversión.',
+      image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&h=500&fit=crop',
+      author: 'Carlos Mendoza',
+      date: '2024-01-15',
+      readTime: '8 min',
+      category: 'Consultoría Solar',
+    },
+    {
+      id: 2,
+      title: 'ISO 50001:2018 - Claves para una Implementación Exitosa',
+      excerpt: 'Todo lo que necesitas saber sobre la implementación de sistemas de gestión energética bajo el estándar ISO 50001.',
+      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=500&fit=crop',
+      author: 'María González',
+      date: '2024-01-10',
+      readTime: '10 min',
+      category: 'Gestión Energética',
+    },
+    {
+      id: 3,
+      title: 'Tendencias en Formación Profesional para Energías Renovables 2024',
+      excerpt: 'Las certificaciones y habilidades más demandadas en el sector de energías renovables este año.',
+      image: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&h=500&fit=crop',
+      author: 'Juan Pérez',
+      date: '2024-01-05',
+      readTime: '6 min',
+      category: 'Formación',
+    },
   ],
-})
+  en: [
+    {
+      id: 1,
+      title: 'Complete Guide to QA/QC Audits in Solar Photovoltaic Projects',
+      excerpt: 'Discover the critical aspects of quality audits in solar plants and how to ensure maximum return on your investment.',
+      image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&h=500&fit=crop',
+      author: 'Carlos Mendoza',
+      date: '2024-01-15',
+      readTime: '8 min',
+      category: 'Solar Consulting',
+    },
+    {
+      id: 2,
+      title: 'ISO 50001:2018 - Keys to Successful Implementation',
+      excerpt: 'Everything you need to know about implementing energy management systems under the ISO 50001 standard.',
+      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=500&fit=crop',
+      author: 'María González',
+      date: '2024-01-10',
+      readTime: '10 min',
+      category: 'Energy Management',
+    },
+    {
+      id: 3,
+      title: 'Professional Training Trends for Renewable Energy 2024',
+      excerpt: 'The most in-demand certifications and skills in the renewable energy sector this year.',
+      image: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&h=500&fit=crop',
+      author: 'Juan Pérez',
+      date: '2024-01-05',
+      readTime: '6 min',
+      category: 'Training',
+    },
+  ],
+}
 
-const blogPosts = [
-  {
-    id: 1,
-    title:
-      'Guía Completa para Auditorías QA/QC en Proyectos Solares Fotovoltaicos',
-    excerpt:
-      'Descubre los aspectos críticos de las auditorías de calidad en plantas solares y cómo asegurar el máximo rendimiento de tu inversión.',
-    image:
-      'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&h=500&fit=crop',
-    author: 'Carlos Mendoza',
-    date: '2024-01-15',
-    readTime: '8 min',
-    category: 'Consultoría Solar',
+const translations = {
+  es: {
+    heroTitle: 'Blog',
+    heroSubtitle: 'Conocimiento y tendencias en energías renovables',
+    ctaTitle: '¿Quieres Mantenerte Actualizado?',
+    ctaDescription: 'Suscríbete a nuestro newsletter para recibir los últimos artículos sobre energías renovables y gestión energética',
+    ctaPrimary: 'Contactar con Expertos',
+    ctaSecondary: 'Ver Todos los Servicios',
   },
-  {
-    id: 2,
-    title: 'ISO 50001:2018 - Claves para una Implementación Exitosa',
-    excerpt:
-      'Todo lo que necesitas saber sobre la implementación de sistemas de gestión energética bajo el estándar ISO 50001.',
-    image:
-      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=500&fit=crop',
-    author: 'María González',
-    date: '2024-01-10',
-    readTime: '10 min',
-    category: 'Gestión Energética',
+  en: {
+    heroTitle: 'Blog',
+    heroSubtitle: 'Knowledge and trends in renewable energy',
+    ctaTitle: 'Want to Stay Updated?',
+    ctaDescription: 'Subscribe to our newsletter to receive the latest articles on renewable energy and energy management',
+    ctaPrimary: 'Contact Experts',
+    ctaSecondary: 'View All Services',
   },
-  {
-    id: 3,
-    title: 'Tendencias en Formación Profesional para Energías Renovables 2024',
-    excerpt:
-      'Las certificaciones y habilidades más demandadas en el sector de energías renovables este año.',
-    image:
-      'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&h=500&fit=crop',
-    author: 'Juan Pérez',
-    date: '2024-01-05',
-    readTime: '6 min',
-    category: 'Formación',
-  },
-]
+}
 
 export default function BlogPage() {
+  const { language } = useLanguage()
+  const t = translations[language as 'es' | 'en']
+  const posts = blogPosts[language as 'es' | 'en']
+
   return (
     <>
       {/* Hero Section */}
@@ -73,10 +112,10 @@ export default function BlogPage() {
           <div className="container mx-auto px-4">
             <div className="max-w-3xl">
               <h1 className="mb-4 text-5xl font-bold text-white md:text-6xl lg:text-7xl">
-                Blog <span className="text-electric-500">ITER</span>
+                {t.heroTitle} <span className="text-electric-500">ITER</span>
               </h1>
               <p className="text-xl text-white/90 md:text-2xl">
-                Conocimiento y tendencias en energías renovables
+                {t.heroSubtitle}
               </p>
             </div>
           </div>
@@ -87,7 +126,7 @@ export default function BlogPage() {
       <section className="bg-white py-20">
         <div className="container mx-auto px-4">
           <div className="grid gap-8 lg:gap-12 lg:grid-cols-3">
-            {blogPosts.map((post) => (
+            {posts.map((post) => (
               <article
                 key={post.id}
                 className="group overflow-hidden rounded-2xl bg-white shadow-sm transition-shadow hover:shadow-xl"
@@ -122,7 +161,7 @@ export default function BlogPage() {
                       <div className="flex items-center space-x-1">
                         <Calendar className="h-4 w-4" />
                         <span>
-                          {new Date(post.date).toLocaleDateString('es-ES')}
+                          {new Date(post.date).toLocaleDateString(language === 'en' ? 'en-US' : 'es-ES')}
                         </span>
                       </div>
                       <div className="flex items-center space-x-1">
@@ -139,11 +178,11 @@ export default function BlogPage() {
       </section>
 
       <CTA
-        title="¿Quieres Mantenerte Actualizado?"
-        description="Suscríbete a nuestro newsletter para recibir los últimos artículos sobre energías renovables y gestión energética"
-        primaryButtonText="Contactar con Expertos"
+        title={t.ctaTitle}
+        description={t.ctaDescription}
+        primaryButtonText={t.ctaPrimary}
         primaryButtonHref="/contacto"
-        secondaryButtonText="Ver Todos los Servicios"
+        secondaryButtonText={t.ctaSecondary}
         secondaryButtonHref="/servicios"
         variant="dark"
       />

@@ -5,6 +5,7 @@ import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
 import { FAQ } from '@/shared/types'
 import { cn } from '@/shared/utils/cn'
+import { useLanguage } from '@/shared/i18n/LanguageContext'
 
 interface ServiceFAQsProps {
   faqs: FAQ[]
@@ -14,6 +15,9 @@ export function ServiceFAQs({ faqs }: ServiceFAQsProps) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
   const [openIndex, setOpenIndex] = useState<number | null>(0)
+  const { language } = useLanguage()
+
+  const title = language === 'en' ? { main: 'Frequently Asked', highlight: 'Questions' } : { main: 'Preguntas', highlight: 'Frecuentes' }
 
   return (
     <section ref={ref} className="bg-slate-50 py-20">
@@ -25,7 +29,7 @@ export function ServiceFAQs({ faqs }: ServiceFAQsProps) {
           transition={{ duration: 0.6 }}
         >
           <h2 className="mb-4 text-3xl font-bold text-slate-900 md:text-4xl">
-            Preguntas <span className="text-electric-500">Frecuentes</span>
+            {title.main} <span className="text-electric-500">{title.highlight}</span>
           </h2>
         </motion.div>
 

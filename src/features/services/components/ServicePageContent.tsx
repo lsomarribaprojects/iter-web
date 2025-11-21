@@ -29,7 +29,7 @@ export function ServicePageContent({ slug }: ServicePageContentProps) {
     'gestion-energetica':
       'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1920&h=1080&fit=crop',
     formacion:
-      'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1920&h=1080&fit=crop',
+      'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=1920&h=1080&fit=crop',
   }
 
   const ctaText = {
