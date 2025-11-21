@@ -12,7 +12,7 @@ export function HeroSection() {
 
   return (
     <section className="relative h-screen w-full overflow-hidden">
-      {/* Video Background */}
+      {/* Video Background - Solar panels in nature */}
       <div className="absolute inset-0 z-0">
         <video
           autoPlay
@@ -20,16 +20,16 @@ export function HeroSection() {
           muted
           playsInline
           className="h-full w-full object-cover"
-          poster="https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1920&h=1080&fit=crop"
+          poster="https://images.unsplash.com/photo-1497440001374-f26997328c1b?w=1920&h=1080&fit=crop"
         >
           <source
-            src="https://videos.pexels.com/video-files/3201597/3201597-uhd_2560_1440_25fps.mp4"
+            src="https://videos.pexels.com/video-files/6590699/6590699-uhd_2732_1440_25fps.mp4"
             type="video/mp4"
           />
         </video>
         {/* Overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-slate-900/50 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-slate-900/30" />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/70 via-slate-900/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-transparent to-slate-900/20" />
       </div>
 
       <EnergyAnimation />

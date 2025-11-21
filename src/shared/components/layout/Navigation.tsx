@@ -67,7 +67,7 @@ export function Navigation() {
           <Link href="/" className="group flex items-center relative">
             <div className="absolute inset-0 bg-gradient-to-r from-electric-500/20 to-energy-500/20 blur-xl rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <div className="relative drop-shadow-[0_0_15px_rgba(59,130,246,0.5)] group-hover:drop-shadow-[0_0_25px_rgba(59,130,246,0.8)] transition-all duration-300">
-              <Logo className="h-10 w-auto brightness-0 invert" />
+              <Logo className="h-14 w-auto brightness-0 invert" />
             </div>
           </Link>
 
