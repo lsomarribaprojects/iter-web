@@ -106,16 +106,51 @@ Cuando el prospecto muestre interés genuino, solicita amablemente:
 **IDIOMAS:**
 Responde en el mismo idioma que el usuario (español o inglés).`
 
+// Respuestas de fallback cuando no hay API key
+function getFallbackResponse(userMessage: string, language: string): string {
+  const msg = userMessage.toLowerCase()
+
+  const responses = {
+    es: {
+      greeting: '¡Hola! Soy Marcus de ITER. Estamos especializados en consultoría solar, gestión energética ISO 50001 y formación profesional. ¿En qué área puedo ayudarte?',
+      iso: `ISO 50001 es la norma internacional para Sistemas de Gestión de Energía. Con ITER, nuestros clientes logran:\n\n- Ahorro energético del 15-20%\n- Implementación en 6-9 meses\n- ROI típico de 1-3 años\n\n¿Te gustaría agendar un diagnóstico gratuito?`,
+      solar: `Ofrecemos consultoría solar integral:\n\n- Evaluación de viabilidad técnica y económica\n- Diseño de sistemas desde 10kWp hasta 50MWp\n- Due diligence y supervisión\n- Payback típico: 4-8 años\n\n¿Tienes un proyecto en mente?`,
+      training: `Nuestros programas de formación incluyen:\n\n- Auditor Interno ISO 50001 (16h)\n- Diseño de Sistemas Fotovoltaicos (24h)\n- Gestión Energética Práctica (12h)\n\nModalidad presencial, virtual o híbrida. ¿Cuál te interesa?`,
+      contact: `¡Excelente! Para agendar una consulta gratuita, puedes:\n\n1. Llamarnos directamente\n2. Escribirnos a info@iter-energy.com\n3. Usar el formulario de contacto en nuestra web\n\n¿Prefieres que te contactemos nosotros?`,
+      default: `Gracias por tu interés. En ITER ofrecemos:\n\n1. Gestión Energética ISO 50001\n2. Consultoría Solar\n3. Formación Profesional\n\n¿Sobre cuál servicio te gustaría más información?`,
+    },
+    en: {
+      greeting: 'Hi! I\'m Marcus from ITER. We specialize in solar consulting, ISO 50001 energy management, and professional training. How can I help you?',
+      iso: `ISO 50001 is the international standard for Energy Management Systems. With ITER, our clients achieve:\n\n- 15-20% energy savings\n- Implementation in 6-9 months\n- Typical ROI of 1-3 years\n\nWould you like to schedule a free diagnosis?`,
+      solar: `We offer comprehensive solar consulting:\n\n- Technical and economic feasibility assessment\n- System design from 10kWp to 50MWp\n- Due diligence and supervision\n- Typical payback: 4-8 years\n\nDo you have a project in mind?`,
+      training: `Our training programs include:\n\n- ISO 50001 Internal Auditor (16h)\n- Photovoltaic Systems Design (24h)\n- Practical Energy Management (12h)\n\nIn-person, virtual, or hybrid. Which interests you?`,
+      contact: `Great! To schedule a free consultation, you can:\n\n1. Call us directly\n2. Email us at info@iter-energy.com\n3. Use the contact form on our website\n\nWould you like us to contact you?`,
+      default: `Thanks for your interest. At ITER we offer:\n\n1. ISO 50001 Energy Management\n2. Solar Consulting\n3. Professional Training\n\nWhich service would you like more information about?`,
+    }
+  }
+
+  const r = responses[language as 'es' | 'en'] || responses.es
+
+  if (msg.includes('hola') || msg.includes('hi') || msg.includes('hello')) return r.greeting
+  if (msg.includes('iso') || msg.includes('50001') || msg.includes('energét') || msg.includes('energy management')) return r.iso
+  if (msg.includes('solar') || msg.includes('fotovoltaic') || msg.includes('panel')) return r.solar
+  if (msg.includes('curso') || msg.includes('formación') || msg.includes('training') || msg.includes('capacitación')) return r.training
+  if (msg.includes('contact') || msg.includes('agendar') || msg.includes('llamar') || msg.includes('cita') || msg.includes('schedule')) return r.contact
+
+  return r.default
+}
+
 export async function POST(req: NextRequest) {
   try {
     const { messages, language = 'es' } = await req.json()
+    const lastUserMessage = messages[messages.length - 1]?.content || ''
 
-    // Validar que tenemos API key
+    // Si no hay API key, usar fallback inteligente
     if (!process.env.OPENAI_API_KEY) {
-      return NextResponse.json(
-        { error: 'OpenAI API key not configured. Please add OPENAI_API_KEY to your environment variables.' },
-        { status: 500 }
-      )
+      return NextResponse.json({
+        message: getFallbackResponse(lastUserMessage, language),
+        fallback: true,
+      })
     }
 
     // Llamar a OpenAI
@@ -138,19 +173,15 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     console.error('Chatbot API Error:', error)
 
-    // Manejo de errores específicos
-    if (error?.status === 401) {
-      return NextResponse.json(
-        { error: 'Invalid OpenAI API key. Please check your OPENAI_API_KEY environment variable.' },
-        { status: 401 }
-      )
-    }
+    // Fallback en caso de error
+    const { messages, language = 'es' } = await req.json().catch(() => ({ messages: [], language: 'es' }))
+    const lastUserMessage = messages[messages.length - 1]?.content || ''
 
-    if (error?.status === 429) {
-      return NextResponse.json(
-        { error: 'Rate limit exceeded. Please try again later.' },
-        { status: 429 }
-      )
+    if (error?.status === 401 || error?.status === 429) {
+      return NextResponse.json({
+        message: getFallbackResponse(lastUserMessage, language),
+        fallback: true,
+      })
     }
 
     return NextResponse.json(

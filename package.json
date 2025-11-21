@@ -25,6 +25,7 @@
     "react-dom": "^18.3.0",
     "react-intersection-observer": "^10.0.0",
     "react-markdown": "^10.1.0",
+    "resend": "^6.5.2",
     "tailwind-merge": "^3.4.0",
     "zod": "^3.22.4",
     "zustand": "^4.4.7"

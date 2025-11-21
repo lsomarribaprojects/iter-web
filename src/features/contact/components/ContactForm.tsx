@@ -67,26 +67,67 @@ export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
 
+  const [error, setError] = useState<string | null>(null)
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setError(null)
 
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-
-    setIsSubmitting(false)
-    setSubmitted(true)
-
-    setTimeout(() => {
-      setSubmitted(false)
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        company: '',
-        service: '',
-        message: '',
+    try {
+      // Guardar lead en la base de datos
+      const leadResponse = await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || null,
+          company: formData.company || null,
+          service: formData.service || null,
+          message: formData.message,
+          source: 'contact_form',
+          createdAt: new Date().toISOString(),
+        }),
       })
-    }, 3000)
+
+      if (!leadResponse.ok) {
+        throw new Error('Error al enviar el mensaje')
+      }
+
+      // Enviar notificación al equipo
+      await fetch('/api/notifications/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          company: formData.company,
+          service: formData.service,
+          motivation: formData.message,
+        }),
+      })
+
+      setSubmitted(true)
+      setTimeout(() => {
+        setSubmitted(false)
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          company: '',
+          service: '',
+          message: '',
+        })
+      }, 3000)
+    } catch (err) {
+      setError(language === 'es'
+        ? 'Error al enviar. Por favor intenta de nuevo.'
+        : 'Error sending. Please try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleChange = (
@@ -236,6 +277,12 @@ export function ContactForm() {
           placeholder={t.messagePlaceholder}
         />
       </div>
+
+      {error && (
+        <div className="rounded-lg bg-red-50 p-4 text-red-700">
+          {error}
+        </div>
+      )}
 
       <button
         type="submit"
