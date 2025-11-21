@@ -7,7 +7,7 @@ export const SITE_CONFIG = {
   links: {
     linkedin: 'https://linkedin.com/company/iter',
     email: 'info@iter-energy.com',
-    phone: '+1 (515) 678-1423',
+    phone: '+1 (515) 802-5762',
   },
   address: {
     street: '',

@@ -1,25 +1,15 @@
-import { Metadata } from 'next'
+'use client'
+
 import Link from 'next/link'
 import Image from 'next/image'
 import { ParallaxImage } from '@/shared/components/animations/ParallaxImage'
 import { SERVICES } from '@/shared/constants/site'
-import { generateMetadata as genMeta } from '@/shared/lib/metadata'
 import { MagneticButton } from '@/shared/components/ui/MagneticButton'
-
-export const metadata: Metadata = genMeta({
-  title: 'Servicios',
-  description:
-    'Consultoría solar, gestión energética ISO 50001 y formación profesional. Servicios de ingeniería especializada para el sector de energías renovables.',
-  keywords: [
-    'servicios energéticos',
-    'consultoría solar',
-    'gestión energética',
-    'formación renovables',
-    'auditoría fotovoltaica',
-  ],
-})
+import { useLanguage } from '@/shared/i18n/LanguageContext'
 
 export default function ServicesPage() {
+  const { t } = useLanguage()
+
   const serviceImages: Record<string, string> = {
     'consultoria-solar':
       'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&h=600&fit=crop',
@@ -27,6 +17,19 @@ export default function ServicesPage() {
       'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop',
     formacion:
       'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&h=600&fit=crop',
+  }
+
+  // Get service names from translations
+  const serviceNames: Record<string, string> = {
+    'gestion-energetica': t.services.energyManagement.title,
+    'consultoria-solar': t.services.energyAudit.title,
+    'formacion': t.services.training.title,
+  }
+
+  const serviceDescriptions: Record<string, string> = {
+    'gestion-energetica': t.services.energyManagement.description,
+    'consultoria-solar': t.services.energyAudit.description,
+    'formacion': t.services.training.description,
   }
 
   return (
@@ -43,10 +46,10 @@ export default function ServicesPage() {
           <div className="container mx-auto px-4">
             <div className="max-w-3xl">
               <h1 className="mb-4 text-5xl font-bold text-white md:text-6xl lg:text-7xl">
-                Nuestros <span className="text-electric-500">Servicios</span>
+                {t.servicesPage.heroTitle} <span className="text-electric-500">{t.servicesPage.heroTitleHighlight}</span>
               </h1>
               <p className="text-xl text-white/90 md:text-2xl">
-                Soluciones integrales para el sector de energías renovables
+                {t.servicesPage.heroSubtitle}
               </p>
             </div>
           </div>
@@ -68,7 +71,7 @@ export default function ServicesPage() {
                   <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
                     <Image
                       src={serviceImages[service.slug]}
-                      alt={service.name}
+                      alt={serviceNames[service.slug] || service.name}
                       fill
                       className="object-cover"
                       sizes="(max-width: 1024px) 100vw, 50vw"
@@ -78,16 +81,16 @@ export default function ServicesPage() {
 
                 <div className={index % 2 === 1 ? 'lg:order-1' : ''}>
                   <h2 className="mb-4 text-3xl font-bold text-slate-900 md:text-4xl">
-                    {service.name}
+                    {serviceNames[service.slug] || service.name}
                   </h2>
                   <p className="mb-6 text-lg text-slate-600">
-                    {service.shortDescription}
+                    {serviceDescriptions[service.slug] || service.shortDescription}
                   </p>
                   <MagneticButton
                     href={`/servicios/${service.slug}`}
                     variant="primary"
                   >
-                    Ver Detalles
+                    {t.servicesPage.viewDetails}
                   </MagneticButton>
                 </div>
               </div>
@@ -100,14 +103,13 @@ export default function ServicesPage() {
       <section className="bg-gradient-to-r from-slate-900 to-blue-900 py-20">
         <div className="container mx-auto px-4 text-center">
           <h2 className="mb-6 text-3xl font-bold text-white md:text-4xl">
-            ¿No estás seguro qué servicio necesitas?
+            {t.servicesPage.ctaTitle}
           </h2>
           <p className="mb-8 text-lg text-white/90">
-            Nuestro equipo de expertos puede ayudarte a identificar la mejor
-            solución
+            {t.servicesPage.ctaDescription}
           </p>
-          <MagneticButton href="/contacto" variant="primary" size="lg">
-            Contactar con Expertos
+          <MagneticButton href="/contacto" variant="cta" size="lg">
+            {t.servicesPage.ctaButton}
           </MagneticButton>
         </div>
       </section>
