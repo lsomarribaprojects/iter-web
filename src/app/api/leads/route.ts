@@ -13,9 +13,11 @@ const supabase = supabaseUrl && supabaseKey
 export async function POST(req: NextRequest) {
   try {
     const lead = await req.json()
+    console.log('📝 Lead received:', { name: lead.name, email: lead.email, source: lead.source })
 
     // Validar datos requeridos
     if (!lead.name || !lead.email) {
+      console.error('❌ Validation failed: missing name or email')
       return NextResponse.json(
         { error: 'Name and email are required' },
         { status: 400 }
@@ -24,6 +26,7 @@ export async function POST(req: NextRequest) {
 
     // Si Supabase está configurado, guardar ahí
     if (supabase) {
+      console.log('✅ Supabase client configured, attempting to save...')
       const { data, error } = await supabase
         .from('leads')
         .insert([
@@ -44,18 +47,21 @@ export async function POST(req: NextRequest) {
         .select()
 
       if (error) {
-        console.error('Supabase error:', error)
+        console.error('❌ Supabase error:', error)
         return NextResponse.json(
           { error: 'Error saving to database', details: error.message },
           { status: 500 }
         )
       }
 
+      console.log('✅ Lead saved successfully in Supabase:', data[0]?.id)
       return NextResponse.json({
         success: true,
         lead: data[0],
         message: 'Lead saved successfully in Supabase',
       })
+    } else {
+      console.log('⚠️ Supabase not configured, using fallback...')
     }
 
     // Fallback: Guardar en archivo local (solo en desarrollo)

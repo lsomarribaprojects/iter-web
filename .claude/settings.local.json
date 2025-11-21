@@ -26,7 +26,11 @@
       "Bash(git branch:*)",
       "Bash(git remote add:*)",
       "Bash(git push:*)",
-      "Bash(wget:*)"
+      "Bash(wget:*)",
+      "Bash(cat:*)",
+      "Bash(npx vercel env add:*)",
+      "Bash(lsof:*)",
+      "Bash(xargs kill:*)"
     ],
     "deny": [],
     "ask": []
