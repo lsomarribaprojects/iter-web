@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1763787711238",
+    "name": "Test Usuario",
+    "company": "Test Company",
+    "email": "test@example.com",
+    "phone": "+1 515 555 0000",
+    "service": "consultoria-solar",
+    "message": "Esta es una prueba del formulario de contacto para verificar que todo funciona correctamente.",
+    "source": "contact_form",
+    "status": "new",
+    "createdAt": "2025-11-22T05:01:51.239Z"
+  },
+  {
+    "id": "1763788079810",
+    "name": "Luis Somarriba",
+    "company": "ARTI",
+    "email": "luis.somarriba.r@gmail.com",
+    "phone": "6092220687",
+    "service": "gestion-energetica",
+    "message": "kjlkjheqkwd",
+    "source": "contact_form",
+    "status": "new",
+    "createdAt": "2025-11-22T05:07:59.810Z"
+  }
+]

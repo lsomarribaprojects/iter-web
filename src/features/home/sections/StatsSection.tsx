@@ -44,7 +44,7 @@ export function StatsSection() {
   ]
 
   return (
-    <section ref={ref} className="bg-slate-900 py-20">
+    <section ref={ref} className="bg-gradient-to-br from-cyan-900/20 via-slate-800 to-slate-900 py-20">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           {stats.map((stat, index) => (

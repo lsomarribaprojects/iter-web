@@ -124,14 +124,6 @@ export function Navigation() {
                 )}
               </div>
             ))}
-            <MagneticButton
-              href="/contacto"
-              variant="primary"
-              size="sm"
-              className="ml-4"
-            >
-              {t.nav.contactButton}
-            </MagneticButton>
           </div>
 
           {/* Mobile Menu Button */}
@@ -209,9 +201,6 @@ export function Navigation() {
                   )}
                 </div>
               ))}
-              <MagneticButton href="/contacto" variant="primary" className="w-full mt-4">
-                {t.nav.contactButton}
-              </MagneticButton>
             </div>
           </motion.div>
         )}

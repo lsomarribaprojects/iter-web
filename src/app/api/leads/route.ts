@@ -24,45 +24,47 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Si Supabase está configurado, guardar ahí
-    if (supabase) {
-      console.log('✅ Supabase client configured, attempting to save...')
-      const { data, error } = await supabase
-        .from('leads')
-        .insert([
-          {
-            name: lead.name,
-            company: lead.company,
-            email: lead.email,
-            phone: lead.phone,
-            position: lead.position,
-            monthly_energy_cost: lead.monthlyEnergyCost,
-            motivation: lead.motivation,
-            preferred_date: lead.preferredDate,
-            conversation_history: lead.conversationHistory,
-            source: lead.source || 'chatbot',
-            created_at: lead.createdAt || new Date().toISOString(),
-          },
-        ])
-        .select()
+    // TEMPORAL: Supabase RLS está bloqueando inserts públicos
+    // Guardar en archivo local hasta que se arregle RLS
+    console.log('⚠️ Saving lead to local file (RLS workaround)...')
 
-      if (error) {
-        console.error('❌ Supabase error:', error)
-        return NextResponse.json(
-          { error: 'Error saving to database', details: error.message },
-          { status: 500 }
-        )
-      }
+    // Guardar en archivo local
+    const fs = require('fs').promises
+    const path = require('path')
 
-      console.log('✅ Lead saved successfully in Supabase:', data[0]?.id)
-      return NextResponse.json({
-        success: true,
-        lead: data[0],
-        message: 'Lead saved successfully in Supabase',
-      })
-    } else {
-      console.log('⚠️ Supabase not configured, using fallback...')
+    const leadsFile = path.join(process.cwd(), 'leads.json')
+
+    let leads = []
+    try {
+      const content = await fs.readFile(leadsFile, 'utf-8')
+      leads = JSON.parse(content)
+    } catch (error) {
+      // Archivo no existe, crear nuevo array
     }
+
+    const newLead = {
+      id: Date.now().toString(),
+      name: lead.name,
+      company: lead.company || null,
+      email: lead.email,
+      phone: lead.phone || null,
+      service: lead.service || null,
+      message: lead.message,
+      source: lead.source || 'contact_form',
+      status: 'new',
+      createdAt: new Date().toISOString(),
+    }
+
+    leads.push(newLead)
+    await fs.writeFile(leadsFile, JSON.stringify(leads, null, 2))
+
+    console.log('✅ Lead saved locally:', newLead.id)
+    return NextResponse.json({
+      success: true,
+      lead: newLead,
+      message: 'Lead saved successfully',
+      note: 'Saved locally until Supabase RLS is configured'
+    })
 
     // Fallback: Guardar en archivo local (solo en desarrollo)
     if (process.env.NODE_ENV === 'development') {

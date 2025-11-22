@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MessageCircle, X, Send, Loader2, Zap } from 'lucide-react'
+import ReactMarkdown from 'react-markdown'
 import { useLanguage } from '@/shared/i18n/LanguageContext'
 import { Message } from '../types'
 
@@ -215,7 +216,21 @@ export function ChatWidget() {
                         : 'bg-white text-slate-800 shadow-sm'
                     }`}
                   >
-                    <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                    <div className="text-sm prose prose-sm max-w-none prose-p:my-1 prose-headings:my-2 prose-ul:my-1 prose-li:my-0">
+                      <ReactMarkdown
+                        components={{
+                          p: ({ children }) => <p className="my-1">{children}</p>,
+                          strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
+                          em: ({ children }) => <em className="italic">{children}</em>,
+                          ul: ({ children }) => <ul className="list-disc pl-4 my-1">{children}</ul>,
+                          ol: ({ children }) => <ol className="list-decimal pl-4 my-1">{children}</ol>,
+                          li: ({ children }) => <li className="my-0">{children}</li>,
+                          code: ({ children }) => <code className="bg-slate-100 rounded px-1 py-0.5 text-xs">{children}</code>,
+                        }}
+                      >
+                        {message.content}
+                      </ReactMarkdown>
+                    </div>
                     <span className={`mt-1 block text-xs ${
                       message.role === 'user' ? 'text-white/70' : 'text-slate-500'
                     }`}>

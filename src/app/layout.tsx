@@ -9,6 +9,7 @@ import { LoadingScreen } from '@/shared/components/animations/LoadingScreen'
 import { ChatWidget } from '@/features/chatbot/components/ChatWidget'
 import { generateMetadata as genMeta } from '@/shared/lib/metadata'
 import { ClientProviders } from '@/shared/providers/ClientProviders'
+import { GoogleAnalytics } from '@/shared/components/analytics/GoogleAnalytics'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -73,6 +74,7 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
+        <GoogleAnalytics />
         <ClientProviders>
           <SmoothScroll>
             <LoadingScreen />
