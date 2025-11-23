@@ -60,6 +60,7 @@ export default function DashboardPage() {
     if (isAuthenticated) {
       loadData()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, filters, currentPage])
 
   const loadData = async () => {

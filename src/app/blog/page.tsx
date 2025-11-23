@@ -44,6 +44,7 @@ export default function BlogPage() {
 
   useEffect(() => {
     loadPosts()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [language])
 
   const loadPosts = async () => {

@@ -31,6 +31,7 @@ export function ChatWidget() {
       }
       setMessages([welcomeMessage])
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, language])
 
   // Scroll al final cuando hay nuevos mensajes

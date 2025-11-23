@@ -1,0 +1,17 @@
+{
+  "name": "ITER Energy Solutions",
+  "short_name": "ITER",
+  "description": "Consultoría especializada en auditoría técnica de proyectos solares, due diligence fotovoltaico, implementación ISO 50001 y capacitación SEI-NABCEP",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#06b6d4",
+  "icons": [
+    {
+      "src": "/images/Logo-ITER-300x217.png",
+      "sizes": "300x217",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
