@@ -263,7 +263,7 @@ export default function PrivacyPage() {
                   <p>
                     Nos reservamos el derecho de actualizar esta Política de Privacidad periódicamente.
                     Te notificaremos sobre cambios significativos publicando la nueva política en esta
-                    página y actualizando la fecha de "Última actualización".
+                    página y actualizando la fecha de 'Última actualización'.
                   </p>
                 </div>
               </div>
