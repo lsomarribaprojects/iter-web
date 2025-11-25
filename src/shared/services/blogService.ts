@@ -1,3 +1,4 @@
+// Fixed: Changed from status to published field
 /**
  * Servicio para gestionar posts del blog desde Supabase
  */
