@@ -158,9 +158,167 @@ export default function BlogPostPage() {
               <p className="text-xl leading-relaxed text-slate-700">{post.excerpt}</p>
             </div>
 
-            {/* Markdown Content */}
-            <div className="prose prose-lg prose-slate max-w-none">
-              <ReactMarkdown>{post.content}</ReactMarkdown>
+            {/* Markdown Content - Professional Blog Styling */}
+            <div className="blog-content">
+              <ReactMarkdown
+                components={{
+                  h1: ({ children }) => (
+                    <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mt-12 mb-6 leading-tight">
+                      {children}
+                    </h1>
+                  ),
+                  h2: ({ children }) => (
+                    <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mt-12 mb-6 pb-3 border-b-2 border-electric-500">
+                      {children}
+                    </h2>
+                  ),
+                  h3: ({ children }) => (
+                    <h3 className="text-xl md:text-2xl font-semibold text-slate-800 mt-10 mb-4">
+                      {children}
+                    </h3>
+                  ),
+                  h4: ({ children }) => (
+                    <h4 className="text-lg font-semibold text-slate-700 mt-8 mb-3">
+                      {children}
+                    </h4>
+                  ),
+                  p: ({ children }) => (
+                    <p className="text-slate-600 text-lg leading-relaxed mb-6">
+                      {children}
+                    </p>
+                  ),
+                  ul: ({ children }) => (
+                    <ul className="my-6 ml-4 space-y-3">
+                      {children}
+                    </ul>
+                  ),
+                  ol: ({ children }) => (
+                    <ol className="my-6 ml-4 space-y-3 list-decimal list-outside">
+                      {children}
+                    </ol>
+                  ),
+                  li: ({ children }) => (
+                    <li className="text-slate-600 text-lg leading-relaxed pl-2 flex items-start gap-3">
+                      <span className="text-electric-500 mt-1.5 flex-shrink-0">•</span>
+                      <span>{children}</span>
+                    </li>
+                  ),
+                  blockquote: ({ children }) => (
+                    <blockquote className="my-8 pl-6 border-l-4 border-electric-500 bg-gradient-to-r from-electric-50 to-transparent py-6 pr-6 rounded-r-xl">
+                      <div className="text-slate-700 text-lg italic">
+                        {children}
+                      </div>
+                    </blockquote>
+                  ),
+                  code: ({ className, children }) => {
+                    const isBlock = className?.includes('language-');
+                    if (isBlock) {
+                      return (
+                        <code className="block bg-slate-800 text-slate-200 rounded-xl p-6 my-6 overflow-x-auto font-mono text-sm leading-relaxed">
+                          {children}
+                        </code>
+                      );
+                    }
+                    // Inline code - subtle styling
+                    return (
+                      <code className="bg-electric-50 text-electric-700 px-2 py-0.5 rounded font-medium text-[0.9em]">
+                        {children}
+                      </code>
+                    );
+                  },
+                  pre: ({ children }) => (
+                    <div className="my-8 rounded-xl overflow-hidden shadow-lg">
+                      <div className="bg-slate-700 px-4 py-2 flex items-center gap-2">
+                        <span className="w-3 h-3 rounded-full bg-red-400"></span>
+                        <span className="w-3 h-3 rounded-full bg-yellow-400"></span>
+                        <span className="w-3 h-3 rounded-full bg-green-400"></span>
+                      </div>
+                      <pre className="bg-slate-800 text-slate-200 p-6 overflow-x-auto text-sm">
+                        {children}
+                      </pre>
+                    </div>
+                  ),
+                  a: ({ href, children }) => {
+                    const isInternal = href?.startsWith('/');
+                    if (isInternal) {
+                      return (
+                        <a href={href} className="text-electric-600 font-semibold hover:text-electric-700 underline decoration-2 underline-offset-2 transition-colors">
+                          {children}
+                        </a>
+                      );
+                    }
+                    return (
+                      <a href={href} className="text-electric-600 font-semibold hover:text-electric-700 underline decoration-2 underline-offset-2 transition-colors" target="_blank" rel="noopener noreferrer">
+                        {children} ↗
+                      </a>
+                    );
+                  },
+                  strong: ({ children }) => (
+                    <strong className="font-bold text-slate-900">
+                      {children}
+                    </strong>
+                  ),
+                  em: ({ children }) => (
+                    <em className="italic text-slate-700">
+                      {children}
+                    </em>
+                  ),
+                  hr: () => (
+                    <hr className="my-12 border-none h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent" />
+                  ),
+                  img: ({ src, alt }) => (
+                    <figure className="my-10">
+                      <div className="relative overflow-hidden rounded-2xl shadow-xl">
+                        <img
+                          src={src}
+                          alt={alt || ''}
+                          className="w-full h-auto object-cover"
+                          loading="lazy"
+                        />
+                      </div>
+                      {alt && (
+                        <figcaption className="mt-3 text-center text-sm text-slate-500 italic">
+                          {alt}
+                        </figcaption>
+                      )}
+                    </figure>
+                  ),
+                  table: ({ children }) => (
+                    <div className="my-8 overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
+                      <table className="w-full border-collapse bg-white">
+                        {children}
+                      </table>
+                    </div>
+                  ),
+                  thead: ({ children }) => (
+                    <thead className="bg-slate-100">
+                      {children}
+                    </thead>
+                  ),
+                  tbody: ({ children }) => (
+                    <tbody className="divide-y divide-slate-200">
+                      {children}
+                    </tbody>
+                  ),
+                  tr: ({ children }) => (
+                    <tr className="hover:bg-slate-50 transition-colors">
+                      {children}
+                    </tr>
+                  ),
+                  th: ({ children }) => (
+                    <th className="px-4 py-3 text-left font-semibold text-slate-900 border-b-2 border-electric-500">
+                      {children}
+                    </th>
+                  ),
+                  td: ({ children }) => (
+                    <td className="px-4 py-3 text-slate-600">
+                      {children}
+                    </td>
+                  ),
+                }}
+              >
+                {post.content}
+              </ReactMarkdown>
             </div>
 
             {/* Share Button */}

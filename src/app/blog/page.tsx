@@ -44,12 +44,12 @@ export default function BlogPage() {
 
   useEffect(() => {
     loadPosts()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [language])
+  }, [])
 
   const loadPosts = async () => {
     setIsLoading(true)
-    const data = await BlogService.getPosts({ language })
+    // No filtrar por idioma - mostrar todos los artículos
+    const data = await BlogService.getPosts()
     setPosts(data)
     setIsLoading(false)
   }
