@@ -30,7 +30,11 @@
       "Bash(cat:*)",
       "Bash(npx vercel env add:*)",
       "Bash(lsof:*)",
-      "Bash(xargs kill:*)"
+      "Bash(xargs kill:*)",
+      "Bash(nextjs-claude-setup)",
+      "Bash(npm run:*)",
+      "Bash(source ~/.bashrc)",
+      "Bash(test:*)"
     ],
     "deny": [],
     "ask": []

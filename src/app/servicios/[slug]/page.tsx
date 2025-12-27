@@ -4,15 +4,16 @@ import { generateMetadata as genMeta } from '@/shared/lib/metadata'
 import { ServicePageContent } from '@/features/services/components/ServicePageContent'
 
 interface ServicePageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export async function generateMetadata({
   params,
 }: ServicePageProps): Promise<Metadata> {
-  const service = servicesData[params.slug]
+  const { slug } = await params
+  const service = servicesData[slug]
 
   if (!service) {
     return genMeta({})
@@ -36,6 +37,7 @@ export async function generateStaticParams() {
   }))
 }
 
-export default function ServicePage({ params }: ServicePageProps) {
-  return <ServicePageContent slug={params.slug} />
+export default async function ServicePage({ params }: ServicePageProps) {
+  const { slug } = await params
+  return <ServicePageContent slug={slug} />
 }
