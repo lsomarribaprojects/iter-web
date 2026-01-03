@@ -44,12 +44,19 @@ export default function BlogPage() {
 
   useEffect(() => {
     loadPosts()
-  }, [])
+  }, [language])
 
   const loadPosts = async () => {
     setIsLoading(true)
-    // No filtrar por idioma - mostrar todos los artículos
-    const data = await BlogService.getPosts()
+    // Intentar cargar artículos en el idioma seleccionado
+    let data = await BlogService.getPosts({ language })
+
+    // Si no hay artículos en el idioma seleccionado, cargar todos
+    // (fallback mientras se crean traducciones)
+    if (data.length === 0) {
+      data = await BlogService.getPosts()
+    }
+
     setPosts(data)
     setIsLoading(false)
   }

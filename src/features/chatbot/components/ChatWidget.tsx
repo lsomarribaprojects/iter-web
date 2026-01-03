@@ -6,6 +6,7 @@ import { MessageCircle, X, Send, Loader2, Zap } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 import { useLanguage } from '@/shared/i18n/LanguageContext'
 import { Message } from '../types'
+import { AGENT_PERSONALITY } from '../constants/knowledge-base'
 
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false)
@@ -13,12 +14,10 @@ export function ChatWidget() {
   const [input, setInput] = useState('')
   const [isTyping, setIsTyping] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  const { language, t } = useLanguage()
+  const { language } = useLanguage()
 
-  const greetingMessage: Record<'es' | 'en', string> = {
-    es: '¡Hola! Soy Marcus de ITER. ¿Buscas reducir costos energéticos o necesitas asesoría en proyectos solares? Cuéntame cómo puedo ayudarte.',
-    en: 'Hi! I\'m Marcus from ITER. Looking to reduce energy costs or need advice on solar projects? Tell me how I can help you.',
-  }
+  // Mensajes de bienvenida de VOLT
+  const greetingMessage = AGENT_PERSONALITY.greetings
 
   // Agregar mensaje de bienvenida cuando se abre el chat
   useEffect(() => {
@@ -134,8 +133,8 @@ export function ChatWidget() {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
         content: language === 'es'
-          ? 'Lo siento, hubo un error. Por favor, verifica que la API key de OpenAI esté configurada correctamente en las variables de entorno (.env.local).'
-          : 'Sorry, there was an error. Please verify that the OpenAI API key is correctly configured in the environment variables (.env.local).',
+          ? 'Lo siento, hubo un error de conexión. Por favor, intenta de nuevo en unos segundos.'
+          : 'Sorry, there was a connection error. Please try again in a few seconds.',
         timestamp: new Date(),
       }
       setMessages((prev) => [...prev, errorMessage])
@@ -160,12 +159,12 @@ export function ChatWidget() {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-2xl transition-transform hover:scale-110 hover:shadow-blue-500/50"
-            aria-label="Open chat"
+            className="fixed bottom-6 right-6 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-2xl transition-transform hover:scale-110 hover:shadow-orange-500/50"
+            aria-label="Open chat with VOLT"
           >
-            <MessageCircle className="h-7 w-7" />
+            <Zap className="h-7 w-7" />
             {/* Badge de notificación */}
-            <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold">
+            <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-green-500 text-xs font-bold animate-pulse">
               1
             </span>
           </motion.button>
@@ -181,22 +180,24 @@ export function ChatWidget() {
             exit={{ opacity: 0, y: 100, scale: 0.8 }}
             className="fixed bottom-6 right-6 z-50 flex h-[600px] w-[400px] max-w-[90vw] max-h-[80vh] flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
           >
-            {/* Header */}
-            <div className="flex items-center justify-between bg-gradient-to-r from-blue-600 to-cyan-500 p-4 text-white shadow-lg">
+            {/* Header con nuevo diseño VOLT */}
+            <div className="flex items-center justify-between bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 p-4 text-white shadow-lg">
               <div className="flex items-center space-x-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20 ring-2 ring-white/30">
-                  <Zap className="h-5 w-5" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/20 ring-2 ring-white/40 backdrop-blur-sm">
+                  <Zap className="h-6 w-6 text-yellow-200" />
                 </div>
                 <div>
-                  <h3 className="font-semibold">Marcus</h3>
+                  <h3 className="font-bold text-lg tracking-wide">VOLT</h3>
                   <p className="text-xs text-white/90">
-                    {language === 'es' ? 'Asesor ITER • En línea' : 'ITER Advisor • Online'}
+                    {language === 'es'
+                      ? 'Asesor Técnico • NEC & ISO 50001'
+                      : 'Technical Advisor • NEC & ISO 50001'}
                   </p>
                 </div>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="rounded-full p-1 transition-colors hover:bg-white/20"
+                className="rounded-full p-2 transition-colors hover:bg-white/20"
                 aria-label="Close chat"
               >
                 <X className="h-5 w-5" />
@@ -211,10 +212,10 @@ export function ChatWidget() {
                   className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-[80%] rounded-2xl px-4 py-2 ${
+                    className={`max-w-[85%] rounded-2xl px-4 py-3 ${
                       message.role === 'user'
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-white text-slate-800 shadow-sm'
+                        ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white'
+                        : 'bg-white text-slate-800 shadow-md border border-slate-100'
                     }`}
                   >
                     <div className="text-sm prose prose-sm max-w-none prose-p:my-1 prose-headings:my-2 prose-ul:my-1 prose-li:my-0">
@@ -223,17 +224,21 @@ export function ChatWidget() {
                           p: ({ children }) => <p className="my-1">{children}</p>,
                           strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
                           em: ({ children }) => <em className="italic">{children}</em>,
-                          ul: ({ children }) => <ul className="list-disc pl-4 my-1">{children}</ul>,
-                          ol: ({ children }) => <ol className="list-decimal pl-4 my-1">{children}</ol>,
-                          li: ({ children }) => <li className="my-0">{children}</li>,
-                          code: ({ children }) => <code className="bg-slate-100 rounded px-1 py-0.5 text-xs">{children}</code>,
+                          ul: ({ children }) => <ul className="list-disc pl-4 my-2">{children}</ul>,
+                          ol: ({ children }) => <ol className="list-decimal pl-4 my-2">{children}</ol>,
+                          li: ({ children }) => <li className="my-0.5">{children}</li>,
+                          code: ({ children }) => (
+                            <code className="bg-slate-100 text-orange-600 rounded px-1.5 py-0.5 text-xs font-mono">
+                              {children}
+                            </code>
+                          ),
                         }}
                       >
                         {message.content}
                       </ReactMarkdown>
                     </div>
-                    <span className={`mt-1 block text-xs ${
-                      message.role === 'user' ? 'text-white/70' : 'text-slate-500'
+                    <span className={`mt-2 block text-xs ${
+                      message.role === 'user' ? 'text-white/70' : 'text-slate-400'
                     }`}>
                       {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
@@ -243,11 +248,14 @@ export function ChatWidget() {
 
               {isTyping && (
                 <div className="flex justify-start">
-                  <div className="max-w-[80%] rounded-2xl bg-white px-4 py-3 shadow-sm">
-                    <div className="flex space-x-2">
-                      <div className="h-2 w-2 animate-bounce rounded-full bg-electric-500" style={{ animationDelay: '0ms' }} />
-                      <div className="h-2 w-2 animate-bounce rounded-full bg-electric-500" style={{ animationDelay: '150ms' }} />
-                      <div className="h-2 w-2 animate-bounce rounded-full bg-electric-500" style={{ animationDelay: '300ms' }} />
+                  <div className="max-w-[80%] rounded-2xl bg-white px-4 py-3 shadow-md border border-slate-100">
+                    <div className="flex items-center space-x-2">
+                      <Zap className="h-4 w-4 text-amber-500 animate-pulse" />
+                      <div className="flex space-x-1">
+                        <div className="h-2 w-2 animate-bounce rounded-full bg-amber-500" style={{ animationDelay: '0ms' }} />
+                        <div className="h-2 w-2 animate-bounce rounded-full bg-orange-500" style={{ animationDelay: '150ms' }} />
+                        <div className="h-2 w-2 animate-bounce rounded-full bg-red-500" style={{ animationDelay: '300ms' }} />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -256,7 +264,7 @@ export function ChatWidget() {
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Input */}
+            {/* Input mejorado */}
             <div className="border-t border-slate-200 bg-white p-4">
               <div className="flex space-x-2">
                 <input
@@ -264,14 +272,16 @@ export function ChatWidget() {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder={language === 'es' ? 'Escribe tu mensaje...' : 'Type your message...'}
-                  className="flex-1 rounded-full border border-slate-300 px-4 py-2 text-sm focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  placeholder={language === 'es'
+                    ? 'Pregunta sobre NEC, ISO 50001, diseño PV...'
+                    : 'Ask about NEC, ISO 50001, PV design...'}
+                  className="flex-1 rounded-full border border-slate-300 px-4 py-2.5 text-sm focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/20 transition-all"
                   disabled={isTyping}
                 />
                 <button
                   onClick={handleSend}
                   disabled={!input.trim() || isTyping}
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-white transition-colors hover:bg-blue-700 disabled:bg-slate-300 disabled:cursor-not-allowed"
+                  className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white transition-all hover:from-amber-600 hover:to-orange-600 hover:shadow-lg disabled:from-slate-300 disabled:to-slate-400 disabled:cursor-not-allowed"
                   aria-label="Send message"
                 >
                   {isTyping ? (
@@ -281,10 +291,10 @@ export function ChatWidget() {
                   )}
                 </button>
               </div>
-              <p className="mt-2 text-center text-xs text-slate-500">
+              <p className="mt-2 text-center text-xs text-slate-400">
                 {language === 'es'
-                  ? 'Powered by OpenAI GPT-4'
-                  : 'Powered by OpenAI GPT-4'}
+                  ? 'VOLT • Experto en NEC 2020/2023/2026 & ISO 50001'
+                  : 'VOLT • Expert in NEC 2020/2023/2026 & ISO 50001'}
               </p>
             </div>
           </motion.div>

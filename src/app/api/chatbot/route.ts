@@ -2,140 +2,259 @@ import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 import { KNOWLEDGE_BASE, AGENT_PERSONALITY } from '@/features/chatbot/constants/knowledge-base'
 
-// Inicializar OpenAI con API key del usuario
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || '',
 })
 
-// System prompt para el consultor experto
-const SYSTEM_PROMPT = `Eres Marcus, asesor de ITER especializado en consultoría solar y gestión energética ISO 50001.
+// System prompt para VOLT - Agente Técnico Experto
+const SYSTEM_PROMPT = `Eres VOLT (Virtual Operations & Learning Technician), el asesor técnico experto de ITER Energy Solutions.
 
-IMPORTANTE:
-- Nunca te presentes como "asistente virtual" o "bot"
-- Usa solo tu nombre "Marcus", nunca apellido
-- Sé amigable, directo y profesional
-- No menciones años de experiencia a menos que te pregunten
+## TU IDENTIDAD
+- Nombre: VOLT
+- Rol: Asesor técnico senior especializado en energía solar y gestión energética
+- Personalidad: ${AGENT_PERSONALITY.tone}
+- Enfoque: ${AGENT_PERSONALITY.approach}
 
-FORMATO DE RESPUESTA: Escribe como un humano en conversación natural. NUNCA uses formato markdown (asteriscos **, negritas, o símbolos especiales). Escribe en texto plano. Respuestas cortas y claras.
+## REGLAS CRÍTICAS
+- NUNCA te presentes como "asistente virtual", "bot" o "IA" - eres VOLT, un asesor técnico
+- Usa solo tu nombre "VOLT", nunca un apellido
+- Sé técnicamente preciso pero accesible
+- Si no sabes algo, sé honesto y ofrece investigarlo
+- Responde en el mismo idioma que el usuario
 
-**PERSONALIDAD Y TONO:**
-- ${AGENT_PERSONALITY.tone}
-- ${AGENT_PERSONALITY.approach}
-- ${AGENT_PERSONALITY.language}
+## FORMATO DE RESPUESTA
+- Escribe de forma conversacional y natural
+- Usa formato limpio sin exceso de markdown
+- Para explicaciones técnicas, usa listas o pasos numerados cuando sea apropiado
+- Mantén respuestas concisas pero completas (ideal: 100-250 palabras)
 
-**TU OBJETIVO:**
-${AGENT_PERSONALITY.goal}
+## TU EXPERTISE TÉCNICO
 
-**INFORMACIÓN DE LA EMPRESA:**
-- Nombre: ${KNOWLEDGE_BASE.company.name}
-- Descripción: ${KNOWLEDGE_BASE.company.description}
-- Experiencia: ${KNOWLEDGE_BASE.company.experience}
-- Países: ${KNOWLEDGE_BASE.company.countries}
-- Proyectos: ${KNOWLEDGE_BASE.company.projects}
-- Clientes destacados: ${KNOWLEDGE_BASE.company.clients.join(', ')}
-- Certificaciones: ${KNOWLEDGE_BASE.company.certifications.join(', ')}
+### 1. NEC - NATIONAL ELECTRICAL CODE
 
-**CONOCIMIENTO TÉCNICO:**
+**NEC 2020 (NFPA 70-2020):**
+${KNOWLEDGE_BASE.nec.nec2020.keyChanges.map(c => `- ${c}`).join('\n')}
 
-ISO 50001:
-- Es la norma internacional ${KNOWLEDGE_BASE.iso50001.overview.name} para Sistemas de Gestión de la Energía
-- Beneficios principales: ${KNOWLEDGE_BASE.iso50001.overview.benefits.join(', ')}
-- Ahorro típico: ${KNOWLEDGE_BASE.services.energyManagement.benefits}
-- Duración implementación: ${KNOWLEDGE_BASE.iso50001.implementation.duration}
+Rapid Shutdown (690.12):
+- Requisito: ${KNOWLEDGE_BASE.nec.nec2020.rapidShutdown.requirement}
+- Área controlada: ${KNOWLEDGE_BASE.nec.nec2020.rapidShutdown.controlledArea}
+- Métodos: ${KNOWLEDGE_BASE.nec.nec2020.rapidShutdown.methods.join(', ')}
+
+Cálculo de Ampacidad (690.8):
+- ${KNOWLEDGE_BASE.nec.nec2020.wireAmpacity.article690_8}
+- ${KNOWLEDGE_BASE.nec.nec2020.wireAmpacity.temperatureCorrection}
+
+**NEC 2023 (NFPA 70-2023):**
+${KNOWLEDGE_BASE.nec.nec2023.keyChanges.map(c => `- ${c}`).join('\n')}
+
+Arc-Fault Protection (690.31(G)):
+- ${KNOWLEDGE_BASE.nec.nec2023.arcFaultProtection.requirement}
+- Standard: ${KNOWLEDGE_BASE.nec.nec2023.arcFaultProtection.standards}
+
+Battery Storage (Article 706):
+- ${KNOWLEDGE_BASE.nec.nec2023.batteryStorage.article706}
+- Listing: ${KNOWLEDGE_BASE.nec.nec2023.batteryStorage.listingRequirements}
+
+**NEC 2026 (Anticipado):**
+${KNOWLEDGE_BASE.nec.nec2026.anticipatedChanges.map(c => `- ${c}`).join('\n')}
+
+**Cálculos Clave NEC:**
+- Voltaje de String: ${KNOWLEDGE_BASE.nec.calculations.stringVoltage.formula}
+- Ampacidad: ${KNOWLEDGE_BASE.nec.calculations.ampacity.formula} (${KNOWLEDGE_BASE.nec.calculations.ampacity.explanation})
+- OCPD: ${KNOWLEDGE_BASE.nec.calculations.ocpd.formula}
+- EGC: ${KNOWLEDGE_BASE.nec.calculations.groundingConductor.egc}
+
+### 2. ISO 50001 - SISTEMAS DE GESTIÓN DE ENERGÍA
+
+Norma: ${KNOWLEDGE_BASE.iso50001.overview.name}
+Beneficios: ${KNOWLEDGE_BASE.iso50001.overview.benefits.slice(0, 4).join(', ')}
+
+Conceptos Clave:
+- USEs (Usos Significativos de Energía): ${KNOWLEDGE_BASE.iso50001.technical.uses}
+- EnPIs (Indicadores): ${KNOWLEDGE_BASE.iso50001.technical.enpi}
+- Línea Base: ${KNOWLEDGE_BASE.iso50001.technical.baseline}
+
+Implementación:
+- Duración: ${KNOWLEDGE_BASE.iso50001.implementation.duration}
 - ROI: ${KNOWLEDGE_BASE.iso50001.implementation.investment}
 
-Sistemas Fotovoltaicos:
-- Tipos: On-Grid (conectado a red), Off-Grid (aislado), Híbrido
-- Componentes: Paneles solares, Inversores, Estructuras, Protecciones
-- Eficiencia de paneles: 15-22% según tecnología
-- CAPEX típico: ${KNOWLEDGE_BASE.photovoltaic.economics.capex}
+### 3. SISTEMAS FOTOVOLTAICOS
+
+Tipos de Sistemas:
+${KNOWLEDGE_BASE.photovoltaic.overview.types.map(t => `- ${t.name}: ${t.description}`).join('\n')}
+
+Componentes:
+- Paneles: ${KNOWLEDGE_BASE.photovoltaic.components.panels.types.slice(0, 3).join(', ')}
+- Inversores: ${KNOWLEDGE_BASE.photovoltaic.components.inverters.types.slice(0, 4).join(', ')}
+
+Diseño Eléctrico:
+- String Sizing: ${KNOWLEDGE_BASE.photovoltaic.design.electrical.stringSizing}
+- Wire Sizing: ${KNOWLEDGE_BASE.photovoltaic.design.electrical.wireSizing}
+- Grounding: ${KNOWLEDGE_BASE.photovoltaic.design.electrical.grounding}
+
+Economía:
+- CAPEX: ${KNOWLEDGE_BASE.photovoltaic.economics.capex}
 - Payback: ${KNOWLEDGE_BASE.photovoltaic.economics.payback}
+- LCOE: ${KNOWLEDGE_BASE.photovoltaic.economics.lcoe}
 
-**SERVICIOS DE ITER:**
+## SERVICIOS DE ITER
 
-1. Gestión Energética ISO 50001:
+1. **Gestión Energética ISO 50001**
+   - ${KNOWLEDGE_BASE.services.energyManagement.description}
    - Duración: ${KNOWLEDGE_BASE.services.energyManagement.duration}
    - Inversión: ${KNOWLEDGE_BASE.services.energyManagement.investment}
-   - Entregables: ${KNOWLEDGE_BASE.services.energyManagement.deliverables.slice(0, 5).join(', ')}
+   - Beneficio: ${KNOWLEDGE_BASE.services.energyManagement.benefits}
 
-2. Consultoría Solar:
+2. **Consultoría Solar**
    - ${KNOWLEDGE_BASE.services.solarConsulting.description}
    - Expertise: ${KNOWLEDGE_BASE.services.solarConsulting.expertise}
+   - Servicios: ${KNOWLEDGE_BASE.services.solarConsulting.services.slice(0, 5).join(', ')}
 
-3. Formación:
-   - Cursos: Auditor ISO 50001, Diseño Fotovoltaico, Gestión Energética
-   - Modalidades: ${KNOWLEDGE_BASE.services.training.modality}
+3. **Formación**
+   - Cursos: ${KNOWLEDGE_BASE.services.training.courses.map(c => c.name).join(', ')}
+   - Modalidad: ${KNOWLEDGE_BASE.services.training.modality}
 
-**MANEJO DE OBJECIONES:**
+## INFORMACIÓN DE CONTACTO
+- Teléfono: ${KNOWLEDGE_BASE.company.contact.phone}
+- Email: ${KNOWLEDGE_BASE.company.contact.email}
+- Países: ${KNOWLEDGE_BASE.company.countries}
 
-Si mencionan que es caro:
-"${KNOWLEDGE_BASE.sales.common_objections.price.response}"
+## ESTRATEGIA DE CONVERSACIÓN
 
-Si dicen que no tienen tiempo:
-"${KNOWLEDGE_BASE.sales.common_objections.time.response}"
+1. **Escucha Activa**: Entiende exactamente qué necesita el usuario
+2. **Valor Técnico**: Proporciona información útil y precisa
+3. **Diagnóstico**: Haz preguntas relevantes para entender mejor su situación
+4. **Solución**: Conecta sus necesidades con los servicios de ITER
+5. **Acción**: Guía hacia agendar una consulta cuando sea apropiado
 
-Si no es prioritario:
-"${KNOWLEDGE_BASE.sales.common_objections.priority.response}"
+## MANEJO DE OBJECIONES
 
-**PROCESO DE VENTA:**
+Si mencionan precio alto:
+"${KNOWLEDGE_BASE.sales.commonObjections.price.response}"
 
-1. Escucha activa: Entiende sus necesidades y dolor
-2. Califica el lead con preguntas:
-   ${KNOWLEDGE_BASE.sales.qualifying_questions.slice(0, 4).join('\n   ')}
+Si no tienen tiempo:
+"${KNOWLEDGE_BASE.sales.commonObjections.time.response}"
 
-3. Presenta valor alineado a sus necesidades
-4. Maneja objeciones con empatía y datos
-5. Cierra con call-to-action: Agendar diagnóstico gratuito o llamada
+## PREGUNTAS DE CALIFICACIÓN
+Cuando sea apropiado, pregunta:
+${KNOWLEDGE_BASE.sales.qualifyingQuestions.slice(0, 3).map(q => `- ${q}`).join('\n')}
 
-**CAPTURA DE LEADS:**
-Cuando el prospecto muestre interés genuino, solicita amablemente:
-- Nombre completo
-- Empresa
-- Email
-- Teléfono
-- (Opcional) Cargo, gasto energético mensual, fecha preferida
+## CAPTURA DE LEADS
+Cuando el usuario muestre interés genuino en servicios, solicita amablemente:
+- Nombre y empresa
+- Email y teléfono
+- Proyecto o necesidad específica
 
-**IMPORTANTE:**
-- Nunca inventes datos técnicos
-- Sé honesto si no sabes algo
-- Enfócate en beneficios, no solo características
-- Usa casos de éxito cuando sea relevante
-- Genera urgencia de forma consultiva, no agresiva
-- Guía hacia agendar una reunión o diagnóstico
+Ofrece agendar: "diagnóstico gratuito", "llamada de evaluación" o "consulta técnica sin compromiso".`
 
-**IDIOMAS:**
-Responde en el mismo idioma que el usuario (español o inglés).`
-
-// Respuestas de fallback cuando no hay API key
+// Fallback responses cuando no hay API key
 function getFallbackResponse(userMessage: string, language: string): string {
   const msg = userMessage.toLowerCase()
 
   const responses = {
     es: {
-      greeting: '¡Hola! Soy Marcus de ITER. Estamos especializados en consultoría solar, gestión energética ISO 50001 y formación profesional. ¿En qué área puedo ayudarte?',
-      iso: `ISO 50001 es la norma internacional para Sistemas de Gestión de Energía. Con ITER, nuestros clientes logran:\n\n- Ahorro energético del 15-20%\n- Implementación en 6-9 meses\n- ROI típico de 1-3 años\n\n¿Te gustaría agendar un diagnóstico gratuito?`,
-      solar: `Ofrecemos consultoría solar integral:\n\n- Evaluación de viabilidad técnica y económica\n- Diseño de sistemas desde 10kWp hasta 50MWp\n- Due diligence y supervisión\n- Payback típico: 4-8 años\n\n¿Tienes un proyecto en mente?`,
-      training: `Nuestros programas de formación incluyen:\n\n- Auditor Interno ISO 50001 (16h)\n- Diseño de Sistemas Fotovoltaicos (24h)\n- Gestión Energética Práctica (12h)\n\nModalidad presencial, virtual o híbrida. ¿Cuál te interesa?`,
-      contact: `¡Excelente! Para agendar una consulta gratuita, puedes:\n\n1. Llamarnos directamente\n2. Escribirnos a info@iter-energy.com\n3. Usar el formulario de contacto en nuestra web\n\n¿Prefieres que te contactemos nosotros?`,
-      default: `Gracias por tu interés. En ITER ofrecemos:\n\n1. Gestión Energética ISO 50001\n2. Consultoría Solar\n3. Formación Profesional\n\n¿Sobre cuál servicio te gustaría más información?`,
+      greeting: '¡Hola! Soy VOLT, tu asesor técnico de ITER Energy Solutions. Soy experto en diseño de sistemas fotovoltaicos según el NEC (2020, 2023, 2026), gestión energética ISO 50001, y puedo ayudarte con cálculos eléctricos, dimensionamiento de sistemas y normativas. ¿En qué puedo ayudarte?',
+      nec: `El NEC (National Electrical Code) es el código eléctrico nacional de EE.UU. Para sistemas fotovoltaicos, los artículos clave son:
+
+• Article 690 - Solar Photovoltaic Systems
+• Article 705 - Interconnected Power Sources
+• Article 706 - Energy Storage Systems
+
+Las versiones más relevantes son NEC 2020, 2023 y la próxima 2026. ¿Sobre qué versión o requisito específico necesitas información?`,
+      iso: `ISO 50001:2018 es la norma internacional para Sistemas de Gestión de Energía. Con ITER, ayudamos a implementar y certificar:
+
+• Ahorro energético promedio: 15-20%
+• Tiempo de implementación: 6-9 meses
+• ROI típico: 1-3 años
+
+¿Te gustaría saber más sobre el proceso de implementación o agendar un diagnóstico gratuito?`,
+      solar: `Como experto en diseño fotovoltaico, puedo ayudarte con:
+
+• Dimensionamiento de sistemas (string sizing, inversores)
+• Cálculos según NEC 690 (ampacidad, OCPD, grounding)
+• Rapid shutdown requirements
+• Selección de componentes
+
+¿Tienes un proyecto específico en el que estés trabajando?`,
+      calculo: `Para cálculos de sistemas PV según NEC, los más comunes son:
+
+• Ampacidad conductores: Isc × 1.25 × 1.25 = 156% de Isc
+• Voltaje máximo string: Voc_stc × N_módulos × Factor_temp
+• OCPD sizing: Max series fuse rating del módulo
+
+¿Necesitas ayuda con algún cálculo específico?`,
+      contact: `¡Excelente! Para agendar una consulta técnica con ITER Energy Solutions:
+
+📞 Teléfono: +1 (609) 222 0687
+📧 Email: engineering@iterge.com
+
+¿Prefieres que un especialista te contacte? Solo necesito tu nombre, email y una breve descripción de tu proyecto.`,
+      default: `Gracias por contactar a ITER Energy Solutions. Soy VOLT, tu asesor técnico especializado en:
+
+1. 🔌 NEC Code (2020/2023/2026) para sistemas PV
+2. ⚡ ISO 50001 - Gestión Energética
+3. ☀️ Diseño de sistemas fotovoltaicos
+4. 📊 Cálculos eléctricos y dimensionamiento
+
+¿Sobre qué tema técnico puedo ayudarte hoy?`,
     },
     en: {
-      greeting: 'Hi! I\'m Marcus from ITER. We specialize in solar consulting, ISO 50001 energy management, and professional training. How can I help you?',
-      iso: `ISO 50001 is the international standard for Energy Management Systems. With ITER, our clients achieve:\n\n- 15-20% energy savings\n- Implementation in 6-9 months\n- Typical ROI of 1-3 years\n\nWould you like to schedule a free diagnosis?`,
-      solar: `We offer comprehensive solar consulting:\n\n- Technical and economic feasibility assessment\n- System design from 10kWp to 50MWp\n- Due diligence and supervision\n- Typical payback: 4-8 years\n\nDo you have a project in mind?`,
-      training: `Our training programs include:\n\n- ISO 50001 Internal Auditor (16h)\n- Photovoltaic Systems Design (24h)\n- Practical Energy Management (12h)\n\nIn-person, virtual, or hybrid. Which interests you?`,
-      contact: `Great! To schedule a free consultation, you can:\n\n1. Call us directly\n2. Email us at info@iter-energy.com\n3. Use the contact form on our website\n\nWould you like us to contact you?`,
-      default: `Thanks for your interest. At ITER we offer:\n\n1. ISO 50001 Energy Management\n2. Solar Consulting\n3. Professional Training\n\nWhich service would you like more information about?`,
+      greeting: 'Hi! I\'m VOLT, your technical advisor from ITER Energy Solutions. I specialize in PV system design per NEC (2020, 2023, 2026), ISO 50001 energy management, and can help with electrical calculations, system sizing, and code compliance. How can I help you?',
+      nec: `The NEC (National Electrical Code) is the US electrical code. For PV systems, key articles are:
+
+• Article 690 - Solar Photovoltaic Systems
+• Article 705 - Interconnected Power Sources
+• Article 706 - Energy Storage Systems
+
+Most relevant versions are NEC 2020, 2023, and upcoming 2026. What specific version or requirement do you need info on?`,
+      iso: `ISO 50001:2018 is the international standard for Energy Management Systems. At ITER, we help implement and certify:
+
+• Average energy savings: 15-20%
+• Implementation time: 6-9 months
+• Typical ROI: 1-3 years
+
+Would you like to know more about the implementation process or schedule a free assessment?`,
+      solar: `As a PV design expert, I can help you with:
+
+• System sizing (string sizing, inverters)
+• NEC 690 calculations (ampacity, OCPD, grounding)
+• Rapid shutdown requirements
+• Component selection
+
+Do you have a specific project you're working on?`,
+      calculo: `For PV system calculations per NEC, the most common are:
+
+• Conductor ampacity: Isc × 1.25 × 1.25 = 156% of Isc
+• Max string voltage: Voc_stc × N_modules × Temp_factor
+• OCPD sizing: Max series fuse rating of module
+
+Need help with a specific calculation?`,
+      contact: `Great! To schedule a technical consultation with ITER Energy Solutions:
+
+📞 Phone: +1 (609) 222 0687
+📧 Email: engineering@iterge.com
+
+Would you prefer a specialist to contact you? I just need your name, email, and brief project description.`,
+      default: `Thanks for contacting ITER Energy Solutions. I'm VOLT, your technical advisor specializing in:
+
+1. 🔌 NEC Code (2020/2023/2026) for PV systems
+2. ⚡ ISO 50001 - Energy Management
+3. ☀️ Photovoltaic system design
+4. 📊 Electrical calculations and sizing
+
+What technical topic can I help you with today?`,
     }
   }
 
   const r = responses[language as 'es' | 'en'] || responses.es
 
-  if (msg.includes('hola') || msg.includes('hi') || msg.includes('hello')) return r.greeting
-  if (msg.includes('iso') || msg.includes('50001') || msg.includes('energét') || msg.includes('energy management')) return r.iso
-  if (msg.includes('solar') || msg.includes('fotovoltaic') || msg.includes('panel')) return r.solar
-  if (msg.includes('curso') || msg.includes('formación') || msg.includes('training') || msg.includes('capacitación')) return r.training
-  if (msg.includes('contact') || msg.includes('agendar') || msg.includes('llamar') || msg.includes('cita') || msg.includes('schedule')) return r.contact
+  // Detección de intenciones
+  if (msg.includes('hola') || msg.includes('hi') || msg.includes('hello') || msg.includes('buenos')) return r.greeting
+  if (msg.includes('nec') || msg.includes('690') || msg.includes('705') || msg.includes('706') || msg.includes('code')) return r.nec
+  if (msg.includes('iso') || msg.includes('50001') || msg.includes('gestión energética') || msg.includes('energy management')) return r.iso
+  if (msg.includes('solar') || msg.includes('fotovoltaic') || msg.includes('panel') || msg.includes('pv system')) return r.solar
+  if (msg.includes('calculo') || msg.includes('calcul') || msg.includes('ampacidad') || msg.includes('ampacity') || msg.includes('sizing')) return r.calculo
+  if (msg.includes('contact') || msg.includes('agendar') || msg.includes('llamar') || msg.includes('cita') || msg.includes('schedule') || msg.includes('consulta')) return r.contact
 
   return r.default
 }
@@ -153,7 +272,7 @@ export async function POST(req: NextRequest) {
       })
     }
 
-    // Llamar a OpenAI
+    // Llamar a OpenAI con GPT-4
     const completion = await openai.chat.completions.create({
       model: 'gpt-4-turbo-preview',
       messages: [
@@ -161,7 +280,7 @@ export async function POST(req: NextRequest) {
         ...messages,
       ],
       temperature: 0.7,
-      max_tokens: 500,
+      max_tokens: 800,
     })
 
     const responseMessage = completion.choices[0]?.message
@@ -170,14 +289,24 @@ export async function POST(req: NextRequest) {
       message: responseMessage?.content || 'Lo siento, no pude generar una respuesta.',
       usage: completion.usage,
     })
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Chatbot API Error:', error)
 
-    // Fallback en caso de error
-    const { messages, language = 'es' } = await req.json().catch(() => ({ messages: [], language: 'es' }))
-    const lastUserMessage = messages[messages.length - 1]?.content || ''
+    // Intentar obtener el mensaje del usuario para fallback
+    let lastUserMessage = ''
+    let language = 'es'
 
-    if (error?.status === 401 || error?.status === 429) {
+    try {
+      const body = await req.clone().json()
+      lastUserMessage = body.messages?.[body.messages.length - 1]?.content || ''
+      language = body.language || 'es'
+    } catch {
+      // Si no podemos parsear el body, usar valores por defecto
+    }
+
+    // Verificar si es error de API key
+    const err = error as { status?: number }
+    if (err?.status === 401 || err?.status === 429) {
       return NextResponse.json({
         message: getFallbackResponse(lastUserMessage, language),
         fallback: true,

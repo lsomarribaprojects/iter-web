@@ -34,7 +34,10 @@
       "Bash(nextjs-claude-setup)",
       "Bash(npm run:*)",
       "Bash(source ~/.bashrc)",
-      "Bash(test:*)"
+      "Bash(test:*)",
+      "Bash(node scripts/manage-articles.js:*)",
+      "Bash(node scripts/update-blog-complete.js:*)",
+      "Bash(node:*)"
     ],
     "deny": [],
     "ask": []
